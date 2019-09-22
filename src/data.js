@@ -90,8 +90,7 @@ for(let i = 0; i < FILMS_LENGTH; i++ ) {
 
 generateCommetnts(FILMS_LENGTH, comment, comments);
 
-console.log(comments);
-// console.log(comments);
+console.log(films);
 const countWatched = counterFilters(films, getCountwatched);
 
 const filters = [

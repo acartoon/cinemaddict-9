@@ -102,7 +102,7 @@ for (let i = 0; i < sideBlock.length; i++) {
 }
 
 // popap
-renderFilmsDetails(document.body);
+// renderFilmsDetails(document.body);
 
 // btn
 renderElement(mainContainer.querySelector(`.films-list`), btnShowMoreTemplate());
