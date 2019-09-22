@@ -58,8 +58,8 @@ const renderFilters = () => mainContainer.querySelector(`.main-navigation`)
   .insertAdjacentHTML(`afterBegin`, filters.map(filtersTemplate).join(``));
 
 const renderFilms = (container, start, end) => {
-  container.insertAdjacentHTML(`beforeend`, films.map((item) => 
-  filmCardTemplate(item, getComments(comments, item.id))).slice(start, end).join(``));
+  container.insertAdjacentHTML(`beforeend`, films.map((item) =>
+    filmCardTemplate(item, getComments(comments, item.id))).slice(start, end).join(``));
 };
 
 const renderFilmsDetails = (container) => {
@@ -101,8 +101,24 @@ for (let i = 0; i < sideBlock.length; i++) {
   renderFilmsList(sideBlock[i], filmsListType[i]);
 }
 
+const filmsListTitle = document.createElement(`h2`);
+filmsListTitle.classList.add(`films-list__title`);
+
+let filmsListExtraContainer = mainContainer.querySelectorAll(`.films-list--extra`);
+
+filmsListExtraContainer.forEach((item, i) => {
+  render(item, filmsListTitle.outerHTML);
+  item.querySelector(`.films-list__title`).innerHTML = titles[i];
+
+  render(item, filmsListContainer.outerHTML);
+  renderFilms(item.querySelector(`.films-list__container`), 0, CARDS_COUNT_EXTRA);
+});
+
+const footerStatistics = document.querySelector(`.footer__statistics p`);
+footerStatistics.innerHTML = `${films.length} movies inside`;
+
 // popap
-// renderFilmsDetails(document.body);
+renderFilmsDetails(document.body);
 
 // btn
 renderElement(mainContainer.querySelector(`.films-list`), btnShowMoreTemplate());

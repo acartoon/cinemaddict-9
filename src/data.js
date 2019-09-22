@@ -82,7 +82,7 @@ const comment = () => ({
 const films = new Array(FILMS_LENGTH).fill(``).map(film);
 const comments = [];
 
-for(let i = 0; i < FILMS_LENGTH; i++ ) {
+for (let i = 0; i < FILMS_LENGTH; i++) {
   films[i].id = i;
   films[i].name = Array.from(namesFilm)[i];
   films[i].originalName = Array.from(namesFilm)[i];
@@ -90,7 +90,6 @@ for(let i = 0; i < FILMS_LENGTH; i++ ) {
 
 generateCommetnts(FILMS_LENGTH, comment, comments);
 
-console.log(films);
 const countWatched = counterFilters(films, getCountwatched);
 
 const filters = [
