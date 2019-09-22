@@ -1,9 +1,6 @@
-export const filmDtailsTemplate = ({id, name, originalName, director, genres, rating,
+export const filmDtailsTemplate = ({name, originalName, director, genres, rating,
   runtime, description, watchlist, watched, favorite, writers, actors,
-  releaseDate, country, age, poster}, comments) => {
-    console.log(id)
-    console.log(comments)
-   return `<section class="film-details">
+  releaseDate, country, age, poster}, comments) => `<section class="film-details">
   <form class="film-details__inner" action="" method="get">
     <div class="form-details__top-container">
       <div class="film-details__close">
@@ -130,4 +127,4 @@ export const filmDtailsTemplate = ({id, name, originalName, director, genres, ra
       </section>
     </div>
   </form>
-</section>`};
+</section>`;

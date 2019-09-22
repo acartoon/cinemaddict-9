@@ -19,9 +19,9 @@ export function getComments(data, id) {
 
   data.forEach((item) => {
     if (item.idFilm === id) {
-      commetns.push(item)
+      commetns.push(item);
     }
-  })
+  });
   return commetns;
 }
 
@@ -43,16 +43,16 @@ export const counterFilters = (array, func) => {
 
 
 export const generateCommetnts = (length, comment, comments) => {
-  //создание случайного количества комменатрией для фильма и присвоения id фильма комментариям
-  for(let i = 0; i < length; i++ ) {
+
+  for (let i = 0; i < length; i++) {
     let filmComments = new Array(getrandomInteger(4)).fill(``).map(comment);
     filmComments.forEach((item) => {
       item.idFilm = i;
       comments.push(item);
-      });
+    });
   }
-  //создание id комментариям
-  for(let i = 0; i < comments.length; i++ ) {
+
+  for (let i = 0; i < comments.length; i++) {
     comments[i].id = i;
   }
-}
+};

@@ -23,8 +23,8 @@ const renderFilters = () => mainContainer.querySelector(`.main-navigation`)
 .insertAdjacentHTML(`afterBegin`, filters.map(filtersTemplate).join(``));
 
 const renderFilms = (container, start, end) => {
-  container.insertAdjacentHTML(`beforeend`, films.map((item) => 
-  filmCardTemplate(item, getComments(comments, item.id))).slice(start, end).join(``));
+  container.insertAdjacentHTML(`beforeend`, films.map((item) =>
+    filmCardTemplate(item, getComments(comments, item.id))).slice(start, end).join(``));
 };
 
 const renderFilmsDetails = (container) => {
@@ -47,6 +47,8 @@ navContainer.classList.add(`main-navigation`);
 
 render(mainContainer, navContainer.outerHTML);
 renderFilters();
+render(mainContainer.querySelector(`.main-navigation`), statsTemplate());
+
 render(mainContainer, sortTemplate());
 
 // filmsContainer
@@ -91,11 +93,11 @@ filmsListExtraContainer.forEach((item, i) => {
   renderFilms(item.querySelector(`.films-list__container`), 0, CARDS_COUNT_EXTRA);
 });
 
-const footerStatistics = document.querySelector(`.footer__statistics p`)
-footerStatistics.innerHTML = `${films.length} movies inside`
+const footerStatistics = document.querySelector(`.footer__statistics p`);
+footerStatistics.innerHTML = `${films.length} movies inside`;
 
 // popap
-// renderFilmsDetails(document.body);
+renderFilmsDetails(document.body);
 
 // btn
 render(mainContainer.querySelector(`.films-list`), btnShowMoreTemplate());
@@ -106,10 +108,10 @@ const clickBtn = (evt) => {
   evt.preventDefault();
   renderFilms(mainContainer.querySelector(`.films-list .films-list__container`), carsToRender, carsToRender + STEP_TO_RENDER);
   carsToRender += STEP_TO_RENDER;
-  
+
   if (films.length <= carsToRender) {
     btnShowMore.classList.add(`visually-hidden`);
   }
-}
+};
 
-btnShowMore.addEventListener(`click`, clickBtn)
+btnShowMore.addEventListener(`click`, clickBtn);
