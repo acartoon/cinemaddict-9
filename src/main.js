@@ -10,7 +10,8 @@ import {films, filters, comments, titles, countWatched} from './data.js';
 import {getComments} from './utils.js';
 
 const CARDS_COUNT_EXTRA = 2;
-const CARDS_COUNT = 5;
+const STEP_TO_RENDER = 5;
+let carsToRender = STEP_TO_RENDER;
 const headerContainer = document.body.querySelector(`.header`);
 const mainContainer = document.body.querySelector(`.main`);
 
@@ -67,7 +68,7 @@ filmsListContainer.classList.add(`films-list__container`);
 render(mainContainer.querySelector(`.films-list`), filmsListContainer.outerHTML);
 
 // renderFilms
-renderFilms(mainContainer.querySelector(`.films-list .films-list__container`), 0, CARDS_COUNT);
+renderFilms(mainContainer.querySelector(`.films-list .films-list__container`), 0, carsToRender);
 
 // filmsListExtra
 const filmsListExtra = document.createElement(`section`);
@@ -90,15 +91,25 @@ filmsListExtraContainer.forEach((item, i) => {
   renderFilms(item.querySelector(`.films-list__container`), 0, CARDS_COUNT_EXTRA);
 });
 
+const footerStatistics = document.querySelector(`.footer__statistics p`)
+footerStatistics.innerHTML = `${films.length} movies inside`
+
 // popap
-renderFilmsDetails(document.body);
+// renderFilmsDetails(document.body);
 
 // btn
 render(mainContainer.querySelector(`.films-list`), btnShowMoreTemplate());
 
 const btnShowMore = mainContainer.querySelector(`.films-list__show-more`);
-btnShowMore.addEventListener(`click`, (e) => {
-  e.preventDefault();
-  renderFilms(mainContainer.querySelector(`.films-list .films-list__container`), 5, 15);
-  btnShowMore.style.display = `none`;
-});
+
+const clickBtn = (evt) => {
+  evt.preventDefault();
+  renderFilms(mainContainer.querySelector(`.films-list .films-list__container`), carsToRender, carsToRender + STEP_TO_RENDER);
+  carsToRender += STEP_TO_RENDER;
+  
+  if (films.length <= carsToRender) {
+    btnShowMore.classList.add(`visually-hidden`);
+  }
+}
+
+btnShowMore.addEventListener(`click`, clickBtn)
