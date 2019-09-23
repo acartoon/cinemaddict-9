@@ -1,16 +1,8 @@
 import {
-<<<<<<< HEAD
   getRandomElements,
   descriptionFilm,
   getRandomDate,
   getRandomInteger,
-=======
-  getRandomRating,
-  getRandomElements,
-  descriptionFilm,
-  getRandomDate,
-  getrandomInteger,
->>>>>>> 4b5cb16f0cf994efae91d04d2b29173be3c8aa83
   getRandomTime,
   counterFilters,
   getCountWatchlist,
@@ -19,15 +11,9 @@ import {
   generateCommetnts
 } from './utils.js';
 
-<<<<<<< HEAD
 const MOVIE_LENGTH = 15;
 
 const filmNames = new Set([
-=======
-const FILMS_LENGTH = 15;
-
-const namesFilm = new Set([
->>>>>>> 4b5cb16f0cf994efae91d04d2b29173be3c8aa83
   `Здравствуйте, я Ваша тетя`,
   `Собака баскервилей`,
   `Some Like It Hot`,
@@ -45,11 +31,7 @@ const namesFilm = new Set([
   `Ghostbusters`,
 ]);
 
-<<<<<<< HEAD
 const namesPeople = new Set([
-=======
-const namesPiples = new Set([
->>>>>>> 4b5cb16f0cf994efae91d04d2b29173be3c8aa83
   `Alfred Hitchcock`,
   `Stanley Kubrick`,
   `Steven Spielberg`,

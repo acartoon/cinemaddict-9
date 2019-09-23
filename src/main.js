@@ -82,6 +82,7 @@ navContainer.classList.add(`main-navigation`);
 
 renderElement(mainContainer, navContainer.outerHTML);
 renderFilters();
+renderElement(mainContainer.querySelector(`.main-navigation`), statsTemplate());
 renderElement(mainContainer, sortTemplate());
 
 // filmsContainer
@@ -105,7 +106,7 @@ const footerStatistics = document.querySelector(`.footer__statistics p`);
 footerStatistics.innerHTML = `${movie.length} movies inside`;
 
 // popap
-renderFilmsDetails(document.body);
+// renderFilmsDetails(document.body);
 
 // btn
 renderElement(mainContainer.querySelector(`.films-list`), btnShowMoreTemplate());

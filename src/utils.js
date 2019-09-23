@@ -1,6 +1,12 @@
 export const getRandomInteger = (max, min = 1) => Math.round(min - 0.5 + Math.random() * (max - min + 1));
 
-export const getRandomElements = (arr, count) => arr.slice(getRandomInteger(0, arr.length-1), getRandomInteger(count));
+export const getRandomElements = (arr, count) => {
+  const newArr = [];
+  for (let i=0; i < count; i++) {
+    newArr.push(arr[getRandomInteger(0, arr.length - 1)])
+  }
+  return newArr;
+}
 
 export const getRandomTime = () => {
   let munute = getRandomInteger(180, 65);
