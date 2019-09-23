@@ -6,11 +6,11 @@ import {sortTemplate} from './components/sort.js';
 import {filmCardTemplate} from './components/film.js';
 import {btnShowMoreTemplate} from './components/btn-show-more.js';
 import {filmDtailsTemplate} from './components/film-details.js';
-import {films, filters, comments, countWatched} from './data.js';
+import {movie, filters, comments, countWatched} from './data.js';
 import {getComments, renderElement} from './utils.js';
 
 const MAIN_BLOCK_LENGTH = 5;
-let carsToRender = MAIN_BLOCK_LENGTH;
+let cardsToRender = MAIN_BLOCK_LENGTH;
 const SIDE_BLOCK_LENGTH = 2;
 const filmsListType = [
   {
@@ -58,12 +58,12 @@ const renderFilters = () => mainContainer.querySelector(`.main-navigation`)
   .insertAdjacentHTML(`afterBegin`, filters.map(filtersTemplate).join(``));
 
 const renderFilms = (container, start, end) => {
-  container.insertAdjacentHTML(`beforeend`, films.map((item) =>
+  container.insertAdjacentHTML(`beforeend`, movie.map((item) =>
     filmCardTemplate(item, getComments(comments, item.id))).slice(start, end).join(``));
 };
 
 const renderFilmsDetails = (container) => {
-  container.insertAdjacentHTML(`beforeend`, filmDtailsTemplate(films[5], getComments(comments, 5)));
+  container.insertAdjacentHTML(`beforeend`, filmDtailsTemplate(movie[5], getComments(comments, 5)));
 };
 
 // search
@@ -101,21 +101,8 @@ for (let i = 0; i < sideBlock.length; i++) {
   renderFilmsList(sideBlock[i], filmsListType[i]);
 }
 
-const filmsListTitle = document.createElement(`h2`);
-filmsListTitle.classList.add(`films-list__title`);
-
-let filmsListExtraContainer = mainContainer.querySelectorAll(`.films-list--extra`);
-
-filmsListExtraContainer.forEach((item, i) => {
-  render(item, filmsListTitle.outerHTML);
-  item.querySelector(`.films-list__title`).innerHTML = titles[i];
-
-  render(item, filmsListContainer.outerHTML);
-  renderFilms(item.querySelector(`.films-list__container`), 0, CARDS_COUNT_EXTRA);
-});
-
 const footerStatistics = document.querySelector(`.footer__statistics p`);
-footerStatistics.innerHTML = `${films.length} movies inside`;
+footerStatistics.innerHTML = `${movie.length} movies inside`;
 
 // popap
 renderFilmsDetails(document.body);
@@ -127,10 +114,10 @@ const btnShowMore = mainContainer.querySelector(`.films-list__show-more`);
 
 const clickBtn = (evt) => {
   evt.preventDefault();
-  renderFilms(mainContainer.querySelector(`.films-list .films-list__container`), carsToRender, carsToRender + MAIN_BLOCK_LENGTH);
-  carsToRender += MAIN_BLOCK_LENGTH;
+  renderFilms(mainContainer.querySelector(`.films-list .films-list__container`), cardsToRender, cardsToRender + MAIN_BLOCK_LENGTH);
+  cardsToRender += MAIN_BLOCK_LENGTH;
 
-  if (films.length <= carsToRender) {
+  if (films.length <= cardsToRender) {
     btnShowMore.classList.add(`visually-hidden`);
   }
 };

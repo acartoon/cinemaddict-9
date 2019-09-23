@@ -1,18 +1,13 @@
-export const getrandomInteger = (max, min = 1) => Math.round(min - 0.5 + Math.random() * (max - min + 1));
+export const getRandomInteger = (max, min = 1) => Math.round(min - 0.5 + Math.random() * (max - min + 1));
 
-export const getRandomElements = (arr, num) => arr.sort(() => 0.5 - Math.random()).slice(0, num);
-
-export const getRandomRating = () => Math.round(0 - 0.5 + Math.random() * (10 - 0 + 1) * 10) / 10;
+export const getRandomElements = (arr, count) => arr.slice(getRandomInteger(0, arr.length-1), getRandomInteger(count));
 
 export const getRandomTime = () => {
-  let munute = getrandomInteger(180, 65);
+  let munute = getRandomInteger(180, 65);
   return `${Math.floor(munute / 60)} h ${Math.floor(munute % 60)} m`;
 };
 
-export const descriptionFilm = (description) => {
-  let descr = getRandomElements(description.split(`. `), getrandomInteger(3, 1)).join(`. `);
-  return descr.length < 140 ? descr : `${description.slice(0, 139).trim()}…`;
-};
+export const descriptionFilm = (description) => getRandomElements(description.split(`. `), getRandomInteger(3, 1)).join(`. `);
 
 export function getComments(data, id) {
   const commetns = [];
@@ -26,11 +21,10 @@ export function getComments(data, id) {
 }
 
 export function getRandomDate() {
-  let randomYear = getrandomInteger(1930, 1990);
-  let randomMonth = getrandomInteger(1, 12);
-  let randomDate = getrandomInteger(1, 30);
-  let date = new Date(randomYear, randomMonth, randomDate);
-  return date;
+  let randomYear = getRandomInteger(1930, 1990);
+  let randomMonth = getRandomInteger(1, 12);
+  let randomDate = getRandomInteger(1, 30);
+  return new Date(randomYear, randomMonth, randomDate);
 }
 
 export const getCountWatchlist = (item) =>item.watchlist ? true : false;
@@ -41,11 +35,10 @@ export const counterFilters = (array, func) => {
   return array.reduce((total, x) => (func(x) ? total + 1 : total), 0);
 };
 
-
 export const generateCommetnts = (length, comment, comments) => {
 
   for (let i = 0; i < length; i++) {
-    let filmComments = new Array(getrandomInteger(4)).fill(``).map(comment);
+    let filmComments = new Array(getRandomInteger(4)).fill(``).map(comment);
     filmComments.forEach((item) => {
       item.idFilm = i;
       comments.push(item);
