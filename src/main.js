@@ -7,12 +7,52 @@ import {filmCardTemplate} from './components/film-card.js';
 import {btnShowMoreTemplate} from './components/btn-show-more.js';
 import {filmDtailsTemplate} from './components/film-details.js';
 
-const CARDS_LENGTH = 5;
-const CARDS_LENGTH_EXTRA = 2;
-const titlesArr = [`Top rated`, `Most commented`];
+const MAIN_BLOCK_LENGTH = 5;
+const SIDE_BLOCK_LENGTH = 2;
+const filmsListType = [
+  {
+    title: `All movies. Upcoming`,
+    count: MAIN_BLOCK_LENGTH,
+    className: ``,
+  },
+  {
+    title: `Top rated`,
+    count: SIDE_BLOCK_LENGTH,
+    className: `--extra`,
+  },
+  {
+    title: `Most commented`,
+    count: SIDE_BLOCK_LENGTH,
+    className: `--extra`,
+  }
+];
 
 function render(container, template, type = `beforeend`) {
   container.insertAdjacentHTML(type, template);
+}
+
+const renderFilmsListContainer = (container, className) => {
+  const filmsList = document.createElement(`section`);
+  filmsList.classList.add(`films-list${className}`);
+  render(container, filmsList.outerHTML);
+}
+
+const renderFilmsList = (container, {title, count, className}) => {
+  const filmsListTitle = document.createElement(`h2`);
+  filmsListTitle.classList.add(`films-list__title`);
+  if(className == ``) {
+    filmsListTitle.classList.add(`visually-hidden`)
+  }
+  filmsListTitle.innerHTML = title;
+  render(container, filmsListTitle.outerHTML);
+
+  const filmsListContainer = document.createElement(`div`);
+  filmsListContainer.classList.add(`films-list__container`);
+  render(container, filmsListContainer.outerHTML);
+
+  for (let i = 0; i < count; i++) {
+    render(container.querySelector(`.films-list__container`), filmCardTemplate());
+  }
 }
 
 const headerContainer = document.body.querySelector(`.header`);
@@ -44,47 +84,19 @@ filmsContainer.classList.add(`films`);
 
 render(mainContainer, filmsContainer.outerHTML);
 
-// filmsList
-const filmsList = document.createElement(`section`);
-filmsList.classList.add(`films-list`);
+// контейнеры фильмов
+filmsListType.forEach((item) => {
+  renderFilmsListContainer(mainContainer.querySelector(`.films`), item.className);
+});
 
-render(mainContainer.querySelector(`.films`), filmsList.outerHTML);
+const sideBlock = document.querySelectorAll(`[class^="films-list"]`);
 
-const filmsListContainer = document.createElement(`div`);
-filmsListContainer.classList.add(`films-list__container`);
-
-render(mainContainer.querySelector(`.films-list`), filmsListContainer.outerHTML);
-
-for (let i = 0; i < CARDS_LENGTH; i++) {
-  render(mainContainer.querySelector(`.films-list__container`), filmCardTemplate());
+for (let i = 0; i < sideBlock.length; i++) {
+  renderFilmsList(sideBlock[i], filmsListType[i]);
 }
 
 // btn
 render(mainContainer.querySelector(`.films-list`), btnShowMoreTemplate());
-
-// filmsListExtra
-const filmsListExtra = document.createElement(`section`);
-filmsListExtra.classList.add(`films-list--extra`);
-
-for (let i = 0; i < CARDS_LENGTH_EXTRA; i++) {
-  render(mainContainer.querySelector(`.films`), filmsListExtra.outerHTML);
-}
-
-const filmsListTitle = document.createElement(`h2`);
-filmsListTitle.classList.add(`films-list__title`);
-
-let filmsListExtraContainer = mainContainer.querySelectorAll(`.films-list--extra`);
-
-filmsListExtraContainer.forEach((item, i) => {
-  render(item, filmsListTitle.outerHTML);
-  item.querySelector(`.films-list__title`).innerHTML = titlesArr[i];
-
-  render(item, filmsListContainer.outerHTML);
-
-  for (let a = 0; a < CARDS_LENGTH_EXTRA; a++) {
-    render(item.querySelector(`.films-list__container`), filmCardTemplate());
-  }
-});
 
 // popap
 const bodyContainer = document.body;
