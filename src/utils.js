@@ -1,19 +1,13 @@
 export const getRandomInteger = (max, min = 1) => Math.round(min - 0.5 + Math.random() * (max - min + 1));
 
-export const getRandomElements = (arr, count) => {
-  const newArr = [];
-  for (let i=0; i < count; i++) {
-    newArr.push(arr[getRandomInteger(0, arr.length - 1)])
-  }
-  return newArr;
-}
+export const getRandomElements = (arr, count, func) => Array.apply(null, {length: count}).map(() => arr[func(0, arr.length - 1)]);
 
 export const getRandomTime = () => {
   let munute = getRandomInteger(180, 65);
   return `${Math.floor(munute / 60)} h ${Math.floor(munute % 60)} m`;
 };
 
-export const descriptionFilm = (description) => getRandomElements(description.split(`. `), getRandomInteger(3, 1)).join(`. `);
+export const descriptionFilm = (description) => getRandomElements(description.split(`. `), getRandomInteger(3, 1), getRandomInteger).join(`. `);
 
 export function getComments(data, id) {
   const commetns = [];
@@ -54,7 +48,7 @@ export const generateCommetnts = (length, comment, comments) => {
   for (let i = 0; i < comments.length; i++) {
     comments[i].id = i;
   }
-}
+};
 
 export function renderElement(container, template, type = `beforeend`) {
   container.insertAdjacentHTML(type, template);

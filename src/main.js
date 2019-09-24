@@ -36,13 +36,13 @@ const renderFilmsListContainer = (container, className) => {
   const filmsList = document.createElement(`section`);
   filmsList.classList.add(`films-list${className}`);
   renderElement(container, filmsList.outerHTML);
-}
+};
 
 const renderFilmsList = (container, {title, count, className}) => {
   const filmsListTitle = document.createElement(`h2`);
   filmsListTitle.classList.add(`films-list__title`);
-  if(className == ``) {
-    filmsListTitle.classList.add(`visually-hidden`)
+  if (className === ``) {
+    filmsListTitle.classList.add(`visually-hidden`);
   }
   filmsListTitle.innerHTML = title;
   renderElement(container, filmsListTitle.outerHTML);
@@ -51,8 +51,8 @@ const renderFilmsList = (container, {title, count, className}) => {
   filmsListContainer.classList.add(`films-list__container`);
   renderElement(container, filmsListContainer.outerHTML);
 
-  renderFilms(container.querySelector(`.films-list__container`), 0, count)
-}
+  renderFilms(container.querySelector(`.films-list__container`), 0, count);
+};
 
 const renderFilters = () => mainContainer.querySelector(`.main-navigation`)
   .insertAdjacentHTML(`afterBegin`, filters.map(filtersTemplate).join(``));
@@ -106,7 +106,7 @@ const footerStatistics = document.querySelector(`.footer__statistics p`);
 footerStatistics.innerHTML = `${movie.length} movies inside`;
 
 // popap
-// renderFilmsDetails(document.body);
+renderFilmsDetails(document.body);
 
 // btn
 renderElement(mainContainer.querySelector(`.films-list`), btnShowMoreTemplate());
@@ -118,7 +118,7 @@ const clickBtn = (evt) => {
   renderFilms(mainContainer.querySelector(`.films-list .films-list__container`), cardsToRender, cardsToRender + MAIN_BLOCK_LENGTH);
   cardsToRender += MAIN_BLOCK_LENGTH;
 
-  if (films.length <= cardsToRender) {
+  if (movie.length <= cardsToRender) {
     btnShowMore.classList.add(`visually-hidden`);
   }
 };
