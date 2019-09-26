@@ -9,9 +9,6 @@ import {render, unrender, Position, renderElement, getComments} from './utils.js
 import Movie from './components/movie.js';
 import MovieDetails from './components/movie-details.js';
 
-const MAIN_BLOCK_LENGTH = 5;
-let cardsToRender = MAIN_BLOCK_LENGTH;
-const SIDE_BLOCK_LENGTH = 2;
 const filmsListType = [
   {
     title: `All movies. Upcoming`,
@@ -57,8 +54,8 @@ const renderFilmsList = (container, {title, count, className}) => {
 };
 
 const renderMovie = (movieData, commentsData, container) => {
-  const movieComponent = new Movie(movieData, getComments(commentsData, movieData.id));
-  const movieDetailsComponent = new MovieDetails(movieData, getComments(commentsData, movieData.id));
+  const movieComponent = new Movie(getComments(commentsData, movieData.id), movieData);
+  const movieDetailsComponent = new MovieDetails(getComments(commentsData, movieData.id), movieData);
   const openMovieDetails = [`.film-card__poster`, `.film-card__title`, `.film-card__comments`];
 
   const renderMovieDetails = () => {

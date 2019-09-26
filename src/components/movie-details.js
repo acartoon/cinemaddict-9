@@ -1,55 +1,8 @@
-import {createElement} from '../utils.js';
+import { MovieBaseComponent } from './movie-base-component.js';
 
-export default class MovieDetails {
-  constructor({
-    name,
-    originalName,
-    director,
-    genres,
-    rating,
-    runtime,
-    description,
-    watchlist,
-    watched,
-    favorite,
-    writers,
-    actors,
-    releaseDate,
-    country,
-    age,
-    poster
-  }, comments) {
-    this._name = name;
-    this._genres = genres;
-    this._rating = rating;
-    this._runtime = runtime;
-    this._description = description;
-    this._watchlist = watchlist;
-    this._watched = watched;
-    this._favorite = favorite;
-    this._releaseDate = releaseDate;
-    this._poster = poster;
-    this._comments = comments;
-    this._originalName = originalName;
-    this._director = director;
-    this._writers = writers;
-    this._actors = actors;
-    this._country = country;
-    this._age = age;
-    this._element = null;
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-    return this._element;
-  }
-
-  removeElement() {
-    if (this._element) {
-      this._element = null;
-    }
+export default class MovieDetails extends MovieBaseComponent {
+  constructor(comments, data) {
+    super(comments, data)
   }
 
   getTemplate() {

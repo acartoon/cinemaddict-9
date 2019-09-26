@@ -1,33 +1,8 @@
-import {createElement} from '../utils.js';
+import { MovieBaseComponent } from './movie-base-component.js';
 
-export default class Movie {
-  constructor({name, genres, rating, runtime, description, watchlist, watched, favorite, releaseDate, poster}, comments) {
-    this._name = name;
-    this._genres = genres;
-    this._rating = rating;
-    this._runtime = runtime;
-    this._description = description;
-    this._watchlist = watchlist;
-    this._watched = watched;
-    this._favorite = favorite;
-    this._releaseDate = releaseDate;
-    this._poster = poster;
-    this._comments = comments;
-    this._element = null;
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-    return this._element;
-  }
-
-  removeElement() {
-    if (!this._element) {
-      this._element = null;
-    }
-    return this._element;
+export default class Movie extends MovieBaseComponent{
+  constructor(comments, data) {
+    super(comments, data)
   }
 
   getTemplate() {
@@ -35,7 +10,7 @@ export default class Movie {
     <h3 class="film-card__title">${this._name}</h3>
     <p class="film-card__rating">${this._rating}</p>
     <p class="film-card__info">
-      <span class="film-card__year">${this._releaseDate.getFullYear()}</span>
+      <span class="film-card__year">${this._releaseDate}</span>
       <span class="film-card__duration">${this._runtime}</span>
       <span class="film-card__genre">${this._genres[0]}</span>
     </p>
