@@ -5,9 +5,6 @@ import {
   getRandomInteger,
   getRandomTime,
   counterFilters,
-  getCountWatchlist,
-  getCountFavorite,
-  getCountwatched,
   generateCommetnts
 } from './utils.js';
 
@@ -82,12 +79,12 @@ const generateComment = () => ({
 
 for(let i = 0; i < MOVIE_LENGTH; i++ ) {
   movie.push(generateMovie());
-  movie[i] = { ...movie[i], id: i, name: Array.from(filmNames)[i], originalName: Array.from(filmNames)[i] };
+  movie[i] = {...movie[i], id: i, name: Array.from(filmNames)[i], originalName: Array.from(filmNames)[i]};
 }
 
 generateCommetnts(MOVIE_LENGTH, generateComment, comments);
 
-const countWatched = counterFilters(movie, getCountwatched);
+const countWatched = counterFilters(movie, `watched`);
 
 const filters = [
   {
@@ -97,7 +94,7 @@ const filters = [
   },
   {
     title: `Watchlist`,
-    count: counterFilters(movie, getCountWatchlist),
+    count: counterFilters(movie, `watchlist`),
     link: `Watchlist`,
   },
   {
@@ -107,7 +104,7 @@ const filters = [
   },
   {
     title: `Favorites`,
-    count: counterFilters(movie, getCountFavorite),
+    count: counterFilters(movie, `favorite`),
     link: `favorites`,
   },
 ];

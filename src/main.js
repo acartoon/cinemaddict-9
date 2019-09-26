@@ -3,11 +3,11 @@ import {profileTemplate} from './components/profile.js';
 import {filtersTemplate} from './components/filters.js';
 import {statsTemplate} from './components/stats.js';
 import {sortTemplate} from './components/sort.js';
-import {filmCardTemplate} from './components/film.js';
 import {btnShowMoreTemplate} from './components/btn-show-more.js';
-import {filmDtailsTemplate} from './components/film-details.js';
 import {movie, filters, comments, countWatched} from './data.js';
-import {getComments, renderElement} from './utils.js';
+import {render, unrender, Position, renderElement, getComments} from './utils.js';
+import Movie from './components/movie.js';
+import MovieDetails from './components/movie-details.js';
 
 const MAIN_BLOCK_LENGTH = 5;
 let cardsToRender = MAIN_BLOCK_LENGTH;
@@ -51,20 +51,48 @@ const renderFilmsList = (container, {title, count, className}) => {
   filmsListContainer.classList.add(`films-list__container`);
   renderElement(container, filmsListContainer.outerHTML);
 
-  renderFilms(container.querySelector(`.films-list__container`), 0, count);
+  movie.slice(0, count).forEach((i) => {
+    renderMovie(i, comments, container.querySelector(`.films-list__container`));
+  });
+};
+
+const renderMovie = (movieData, commentsData, container) => {
+  const movieComponent = new Movie(movieData, getComments(commentsData, movieData.id));
+  const movieDetailsComponent = new MovieDetails(movieData, getComments(commentsData, movieData.id));
+  const openMovieDetails = [`.film-card__poster`, `.film-card__title`, `.film-card__comments`];
+
+  const renderMovieDetails = () => {
+    render(mainContainer, movieDetailsComponent.getElement(), Position.BEFOREEND);
+    document.addEventListener(`keydown`, onEscKeyDown);
+    movieDetailsComponent.getElement().querySelector(`.film-details__close-btn`)
+      .addEventListener(`click`, unrenderMovieDetails);
+  };
+
+  const unrenderMovieDetails = () => {
+    movieDetailsComponent.getElement().querySelector(`.film-details__close-btn`)
+    .removeEventListener(`click`, unrenderMovieDetails);
+    unrender(movieDetailsComponent.getElement());
+    movieDetailsComponent.removeElement();
+  };
+
+  const onEscKeyDown = (evt) => {
+    if (evt.key === `Escape` || evt.key === `Esc`) {
+      unrenderMovieDetails();
+      document.removeEventListener(`keydown`, onEscKeyDown);
+    }
+  };
+
+  openMovieDetails.forEach((i) => {
+    movieComponent.getElement()
+      .querySelector(i)
+      .addEventListener(`click`, renderMovieDetails);
+  });
+
+  render(container, movieComponent.getElement(), Position.BEFOREEND);
 };
 
 const renderFilters = () => mainContainer.querySelector(`.main-navigation`)
   .insertAdjacentHTML(`afterBegin`, filters.map(filtersTemplate).join(``));
-
-const renderFilms = (container, start, end) => {
-  container.insertAdjacentHTML(`beforeend`, movie.map((item) =>
-    filmCardTemplate(item, getComments(comments, item.id))).slice(start, end).join(``));
-};
-
-const renderFilmsDetails = (container) => {
-  container.insertAdjacentHTML(`beforeend`, filmDtailsTemplate(movie[5], getComments(comments, 5)));
-};
 
 // search
 renderElement(headerContainer, searchTemplate());
@@ -105,9 +133,6 @@ for (let i = 0; i < sideBlock.length; i++) {
 const footerStatistics = document.querySelector(`.footer__statistics p`);
 footerStatistics.innerHTML = `${movie.length} movies inside`;
 
-// popap
-renderFilmsDetails(document.body);
-
 // btn
 renderElement(mainContainer.querySelector(`.films-list`), btnShowMoreTemplate());
 
@@ -115,7 +140,11 @@ const btnShowMore = mainContainer.querySelector(`.films-list__show-more`);
 
 const clickBtn = (evt) => {
   evt.preventDefault();
-  renderFilms(mainContainer.querySelector(`.films-list .films-list__container`), cardsToRender, cardsToRender + MAIN_BLOCK_LENGTH);
+  const movieToRender = movie.slice(cardsToRender, cardsToRender + MAIN_BLOCK_LENGTH);
+
+  movieToRender.forEach((i) => {
+    renderMovie(i, getComments(comments, i.id), mainContainer.querySelector(`.films-list .films-list__container`));
+  });
   cardsToRender += MAIN_BLOCK_LENGTH;
 
   if (movie.length <= cardsToRender) {

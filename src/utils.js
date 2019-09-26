@@ -1,6 +1,6 @@
 export const getRandomInteger = (max, min = 1) => Math.round(min - 0.5 + Math.random() * (max - min + 1));
 
-export const getRandomElements = (arr, count, func) => Array.apply(null, {length: count}).map(() => arr[func(0, arr.length - 1)]);
+export const getRandomElements = (arr, count, func) => new Array(count).fill(``).map(() => arr[func(0, arr.length - 1)]);
 
 export const getRandomTime = () => {
   let munute = getRandomInteger(180, 65);
@@ -27,16 +27,11 @@ export function getRandomDate() {
   return new Date(randomYear, randomMonth, randomDate);
 }
 
-export const getCountWatchlist = (item) =>item.watchlist ? true : false;
-export const getCountFavorite = (item) => item.favorite ? true : false;
-export const getCountwatched = (item) => item.watched ? true : false;
-
-export const counterFilters = (array, func) => {
-  return array.reduce((total, x) => (func(x) ? total + 1 : total), 0);
+export const counterFilters = (array, data) => {
+  return array.reduce((total, x) => (x[data] ? total + 1 : total), 0);
 };
 
 export const generateCommetnts = (length, comment, comments) => {
-
   for (let i = 0; i < length; i++) {
     let filmComments = new Array(getRandomInteger(4)).fill(``).map(comment);
     filmComments.forEach((item) => {
@@ -53,3 +48,28 @@ export const generateCommetnts = (length, comment, comments) => {
 export function renderElement(container, template, type = `beforeend`) {
   container.insertAdjacentHTML(type, template);
 }
+
+export const createElement = (template) => {
+  const newElement = document.createElement(`div`);
+  newElement.innerHTML = template;
+  return newElement.firstChild;
+};
+
+export const Position = {
+  AFTERBEGIN: `afterbegin`,
+  BEFOREEND: `beforeend`,
+};
+
+export const render = (container, element, place) => {
+  const places = {
+    'Position.AFTERBEGIN': container.prepend(element),
+    'Position.BEFOREEND': container.append(element),
+  }
+  return places[place];
+};
+
+export const unrender = (element) => {
+  if (element) {
+    element.remove();
+  }
+};
