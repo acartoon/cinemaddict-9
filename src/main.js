@@ -6,26 +6,8 @@ import {sortTemplate} from './components/sort.js';
 import {btnShowMoreTemplate} from './components/btn-show-more.js';
 import {movie, filters, comments, countWatched} from './data.js';
 import {render, unrender, Position, renderElement, getComments} from './utils.js';
-import Movie from './components/movie.js';
-import MovieDetails from './components/movie-details.js';
+import PageController from './controllers/page-controller.js';
 
-const filmsListType = [
-  {
-    title: `All movies. Upcoming`,
-    count: MAIN_BLOCK_LENGTH,
-    className: ``,
-  },
-  {
-    title: `Top rated`,
-    count: SIDE_BLOCK_LENGTH,
-    className: `--extra`,
-  },
-  {
-    title: `Most commented`,
-    count: SIDE_BLOCK_LENGTH,
-    className: `--extra`,
-  }
-];
 const headerContainer = document.body.querySelector(`.header`);
 const mainContainer = document.body.querySelector(`.main`);
 
@@ -35,6 +17,7 @@ const renderFilmsListContainer = (container, className) => {
   renderElement(container, filmsList.outerHTML);
 };
 
+<<<<<<< HEAD
 const renderFilmsList = (container, {title, count, className}) => {
   const filmsListTitle = document.createElement(`h2`);
   filmsListTitle.classList.add(`films-list__title`);
@@ -87,6 +70,8 @@ const renderMovie = (movieData, commentsData, container) => {
 
   render(container, movieComponent.getElement(), Position.BEFOREEND);
 };
+=======
+>>>>>>> module5-task1
 
 const renderFilters = () => mainContainer.querySelector(`.main-navigation`)
   .insertAdjacentHTML(`afterBegin`, filters.map(filtersTemplate).join(``));
@@ -116,37 +101,16 @@ filmsContainer.classList.add(`films`);
 
 renderElement(mainContainer, filmsContainer.outerHTML);
 
-// контейнеры фильмов
-filmsListType.forEach((item) => {
-  renderFilmsListContainer(mainContainer.querySelector(`.films`), item.className);
-});
-
-const sideBlock = document.querySelectorAll(`[class^="films-list"]`);
-
-for (let i = 0; i < sideBlock.length; i++) {
-  renderFilmsList(sideBlock[i], filmsListType[i]);
-}
+const pageController = new PageController(mainContainer.querySelector(`.films`), movie, comments);
+pageController.init();
 
 const footerStatistics = document.querySelector(`.footer__statistics p`);
 footerStatistics.innerHTML = `${movie.length} movies inside`;
 
 // btn
-renderElement(mainContainer.querySelector(`.films-list`), btnShowMoreTemplate());
+// renderElement(mainContainer.querySelector(`.films-list`), btnShowMoreTemplate());
 
 const btnShowMore = mainContainer.querySelector(`.films-list__show-more`);
 
-const clickBtn = (evt) => {
-  evt.preventDefault();
-  const movieToRender = movie.slice(cardsToRender, cardsToRender + MAIN_BLOCK_LENGTH);
 
-  movieToRender.forEach((i) => {
-    renderMovie(i, getComments(comments, i.id), mainContainer.querySelector(`.films-list .films-list__container`));
-  });
-  cardsToRender += MAIN_BLOCK_LENGTH;
-
-  if (movie.length <= cardsToRender) {
-    btnShowMore.classList.add(`visually-hidden`);
-  }
-};
-
-btnShowMore.addEventListener(`click`, clickBtn);
+// btnShowMore.addEventListener(`click`, clickBtn);
