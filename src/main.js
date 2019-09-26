@@ -69,6 +69,8 @@ const renderMovie = (movieData, commentsData, container) => {
   };
 
   const unrenderMovieDetails = () => {
+    movieDetailsComponent.getElement().querySelector(`.film-details__close-btn`)
+    .removeEventListener(`click`, unrenderMovieDetails);
     unrender(movieDetailsComponent.getElement());
     movieDetailsComponent.removeElement();
   };

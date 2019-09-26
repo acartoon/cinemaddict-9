@@ -27,12 +27,8 @@ export function getRandomDate() {
   return new Date(randomYear, randomMonth, randomDate);
 }
 
-export const getCountWatchlist = (item) =>item.watchlist ? true : false;
-export const getCountFavorite = (item) => item.favorite ? true : false;
-export const getCountwatched = (item) => item.watched ? true : false;
-
-export const counterFilters = (array, func) => {
-  return array.reduce((total, x) => (func(x) ? total + 1 : total), 0);
+export const counterFilters = (array, data) => {
+  return array.reduce((total, x) => (x[data] ? total + 1 : total), 0);
 };
 
 export const generateCommetnts = (length, comment, comments) => {
@@ -65,14 +61,11 @@ export const Position = {
 };
 
 export const render = (container, element, place) => {
-  switch (place) {
-    case Position.AFTERBEGIN:
-      container.prepend(element);
-      break;
-    case Position.BEFOREEND:
-      container.append(element);
-      break;
+  const places = {
+    'Position.AFTERBEGIN': container.prepend(element),
+    'Position.BEFOREEND': container.append(element),
   }
+  return places[place];
 };
 
 export const unrender = (element) => {
