@@ -90,22 +90,39 @@ export default class PageController {
       render(this._container, movieDetailsComponent.getElement(), Position.BEFOREEND);
       document.addEventListener(`keydown`, onEscKeyDown);
 
-      const onFocusInput = () => document.removeEventListener(`keydown`, onEscKeyDown);
-      const onBlurInput = () => document.addEventListener(`keydown`, onEscKeyDown);
+      const commentInput = movieDetailsComponent.getElement()
+        .querySelector(`.film-details__comment-input`);
 
-      commentInput.addEventListener(`focus`,  onFocusInput);
-      commentInput.addEventListener(`blur`, onBlurInput);
-      closeBtn.addEventListener(`click`, unrenderMovieDetails);
+        commentInput.addEventListener(`focus`, () => {
+          document.removeEventListener(`keydown`, onEscKeyDown);
+        });
+
+        commentInput.addEventListener(`blur`, () => {
+            document.addEventListener(`keydown`, onEscKeyDown);
+          })
+
+      movieDetailsComponent.getElement()
+        .querySelector(`.film-details__close-btn`)
+          .addEventListener(`click`, unrenderMovieDetails);
     };
 
+    const unrenderMovieDetails = () => {
+      unrender(movieDetailsComponent.getElement());
+      movieDetailsComponent.removeElement();
+    };
+    
     openMovieDetails.forEach((i) => {
       movieComponent.getElement()
       .querySelector(i)
       .addEventListener(`click`, renderMovieDetails);
     });
 
-    render(container, movieComponent.getElement(), Position.BEFOREEND);
-  }
+      commentInput.addEventListener(`focus`,  onFocusInput);
+      commentInput.addEventListener(`blur`, onBlurInput);
+      closeBtn.addEventListener(`click`, unrenderMovieDetails);
+
+      render(container, movieComponent.getElement(), Position.BEFOREEND);
+    };
 
   _onBtnClick(evt) {
     evt.preventDefault();
@@ -127,7 +144,7 @@ export default class PageController {
       'date': this._movieData.slice(0, this._movieToRender).sort((a, b) => a.releaseDate - b.releaseDate),
       'rating': this._sortingMovieToRated().slice(0, this._movieToRender),
       'default': this._movieData.slice(0, this._movieToRender),
-    };
+    }
     this._renderMovieBoard(movieDataToRender[sortType], container);
   }
 }
