@@ -10,71 +10,7 @@ import PageController from './controllers/page-controller.js';
 const headerContainer = document.body.querySelector(`.header`);
 const mainContainer = document.body.querySelector(`.main`);
 
-<<<<<<< HEAD
-const renderFilmsListContainer = (container, className) => {
-  const filmsList = document.createElement(`section`);
-  filmsList.classList.add(`films-list${className}`);
-  renderElement(container, filmsList.outerHTML);
-};
 
-<<<<<<< HEAD
-const renderFilmsList = (container, {title, count, className}) => {
-  const filmsListTitle = document.createElement(`h2`);
-  filmsListTitle.classList.add(`films-list__title`);
-  if (className === ``) {
-    filmsListTitle.classList.add(`visually-hidden`);
-  }
-  filmsListTitle.innerHTML = title;
-  renderElement(container, filmsListTitle.outerHTML);
-
-  const filmsListContainer = document.createElement(`div`);
-  filmsListContainer.classList.add(`films-list__container`);
-  renderElement(container, filmsListContainer.outerHTML);
-
-  movie.slice(0, count).forEach((i) => {
-    renderMovie(i, comments, container.querySelector(`.films-list__container`));
-  });
-};
-
-const renderMovie = (movieData, commentsData, container) => {
-  const movieComponent = new Movie(getComments(commentsData, movieData.id), movieData);
-  const movieDetailsComponent = new MovieDetails(getComments(commentsData, movieData.id), movieData);
-  const openMovieDetails = [`.film-card__poster`, `.film-card__title`, `.film-card__comments`];
-
-  const renderMovieDetails = () => {
-    render(mainContainer, movieDetailsComponent.getElement(), Position.BEFOREEND);
-    document.addEventListener(`keydown`, onEscKeyDown);
-    movieDetailsComponent.getElement().querySelector(`.film-details__close-btn`)
-      .addEventListener(`click`, unrenderMovieDetails);
-  };
-
-  const unrenderMovieDetails = () => {
-    movieDetailsComponent.getElement().querySelector(`.film-details__close-btn`)
-    .removeEventListener(`click`, unrenderMovieDetails);
-    unrender(movieDetailsComponent.getElement());
-    movieDetailsComponent.removeElement();
-  };
-
-  const onEscKeyDown = (evt) => {
-    if (evt.key === `Escape` || evt.key === `Esc`) {
-      unrenderMovieDetails();
-      document.removeEventListener(`keydown`, onEscKeyDown);
-    }
-  };
-
-  openMovieDetails.forEach((i) => {
-    movieComponent.getElement()
-      .querySelector(i)
-      .addEventListener(`click`, renderMovieDetails);
-  });
-
-  render(container, movieComponent.getElement(), Position.BEFOREEND);
-};
-=======
->>>>>>> module5-task1
-
-=======
->>>>>>> module5-task1
 const renderFilters = () => mainContainer.querySelector(`.main-navigation`)
   .insertAdjacentHTML(`afterBegin`, filters.map(filtersTemplate).join(``));
 
