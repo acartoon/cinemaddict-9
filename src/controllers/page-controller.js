@@ -75,13 +75,13 @@ export default class PageController {
       const commentInput = movieDetailsComponent.getElement()
         .querySelector(`.film-details__comment-input`);
 
-        commentInput.addEventListener(`focus`, () => {
-          document.removeEventListener(`keydown`, onEscKeyDown);
-        });
+      commentInput.addEventListener(`focus`, () => {
+        document.removeEventListener(`keydown`, onEscKeyDown);
+      });
 
-        commentInput.addEventListener(`blur`, () => {
-            document.addEventListener(`keydown`, onEscKeyDown);
-          })
+      commentInput.addEventListener(`blur`, () => {
+        document.addEventListener(`keydown`, onEscKeyDown);
+      });
 
       movieDetailsComponent.getElement()
         .querySelector(`.film-details__close-btn`)
@@ -92,7 +92,7 @@ export default class PageController {
       unrender(movieDetailsComponent.getElement());
       movieDetailsComponent.removeElement();
     };
-    
+
     openMovieDetails.forEach((i) => {
       movieComponent.getElement()
       .querySelector(i)
@@ -128,7 +128,7 @@ export default class PageController {
       'date': this._movieData.slice(0, this._movieToRender).sort((a, b) => a.releaseDate - b.releaseDate),
       'rating': this._sortingMovieToRated().slice(0, this._movieToRender),
       'default': this._movieData.slice(0, this._movieToRender),
-    }
+    };
     this._renderMovieBoard(movieDataToRender[sortType], container);
   }
 }
