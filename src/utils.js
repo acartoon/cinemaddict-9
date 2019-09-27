@@ -10,9 +10,9 @@ export const getRandomTime = () => {
 export const descriptionFilm = (description) => getRandomElements(description.split(`. `), getRandomInteger(3, 1), getRandomInteger).join(`. `);
 
 export function getComments(data, id) {
-  const commetnsData = data.reduce((commetns, item) => {
-    if (item.idFilm === id) {
-      commetns.push(item);
+  const commetnsData = data.reduce((commetns, i) => {
+    if (i.idFilm === id) {
+      commetns.push(i);
     }
     return commetns;
   }, []);
@@ -27,15 +27,15 @@ export function getRandomDate() {
 }
 
 export const counterFilters = (array, data) => {
-  return array.reduce((total, x) => (x[data] ? total + 1 : total), 0);
+  return array.reduce((total, i) => (i[data] ? total + 1 : total), 0);
 };
 
 export const generateCommetnts = (length, comment, comments) => {
-  for (let i = 0; i < length; i++) {
+  for (let a = 0; a < length; a++) {
     let filmComments = new Array(getRandomInteger(4)).fill(``).map(comment);
-    filmComments.forEach((item) => {
-      item.idFilm = i;
-      comments.push(item);
+    filmComments.forEach((i) => {
+      i.idFilm = a;
+      comments.push(i);
     });
   }
 

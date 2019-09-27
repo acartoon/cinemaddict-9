@@ -2,7 +2,6 @@ import {searchTemplate} from './components/search.js';
 import {profileTemplate} from './components/profile.js';
 import {filtersTemplate} from './components/filters.js';
 import {statsTemplate} from './components/stats.js';
-import {sortTemplate} from './components/sort.js';
 import {movie, filters, comments, countWatched} from './data.js';
 import {renderElement} from './utils.js';
 import PageController from './controllers/page-controller.js';
@@ -30,14 +29,8 @@ navContainer.classList.add(`main-navigation`);
 renderElement(mainContainer, navContainer.outerHTML);
 renderFilters();
 renderElement(mainContainer.querySelector(`.main-navigation`), statsTemplate());
-renderElement(mainContainer, sortTemplate());
 
-const movieContainer = document.createElement(`section`);
-movieContainer.classList.add(`films`);
-
-renderElement(mainContainer, movieContainer.outerHTML);
-
-const pageController = new PageController(mainContainer.querySelector(`.films`), movie, comments);
+const pageController = new PageController(document.body, movie, comments);
 pageController.init();
 
 const footerStatistics = document.querySelector(`.footer__statistics p`);
