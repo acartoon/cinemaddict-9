@@ -1,8 +1,8 @@
-import { MovieBaseComponent } from './movie-base-component.js';
+import MovieBaseComponent from './movie-base-component.js';
 
 export default class MovieDetails extends MovieBaseComponent {
   constructor(comments, data) {
-    super(comments, data)
+    super(comments, data);
   }
 
   getTemplate() {

@@ -10,14 +10,13 @@ export const getRandomTime = () => {
 export const descriptionFilm = (description) => getRandomElements(description.split(`. `), getRandomInteger(3, 1), getRandomInteger).join(`. `);
 
 export function getComments(data, id) {
-  const commetns = [];
-
-  data.forEach((item) => {
+  const commetnsData = data.reduce((commetns, item) => {
     if (item.idFilm === id) {
       commetns.push(item);
     }
-  });
-  return commetns;
+    return commetns;
+  }, []);
+  return commetnsData;
 }
 
 export function getRandomDate() {

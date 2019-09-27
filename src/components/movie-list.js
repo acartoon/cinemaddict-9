@@ -1,6 +1,6 @@
 import {AbstractComponent} from './abstract-component.js';
 
-export class MovieList extends AbstractComponent {
+export default class MovieList extends AbstractComponent {
   constructor(isExtra, title) {
     super();
     this._isExtra = isExtra;
