@@ -10,7 +10,10 @@ import PageController from './controllers/page-controller.js';
 const headerContainer = document.body.querySelector(`.header`);
 const mainContainer = document.body.querySelector(`.main`);
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> ec7eae2d3d8a53899210cdc040057cb30d638ff8
 const renderFilters = () => mainContainer.querySelector(`.main-navigation`)
   .insertAdjacentHTML(`afterBegin`, filters.map(filtersTemplate).join(``));
 
