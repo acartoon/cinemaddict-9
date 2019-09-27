@@ -7,7 +7,10 @@ export const getRandomTime = () => {
   return `${Math.floor(munute / 60)} h ${Math.floor(munute % 60)} m`;
 };
 
-export const descriptionFilm = (description) => getRandomElements(description.split(`. `), getRandomInteger(3, 1), getRandomInteger).join(`. `);
+export const descriptionFilm = (description) => {
+  const descriptionArray = getRandomElements(description.split(`. `), getRandomInteger(3, 1), getRandomInteger);
+  return `${descriptionArray.join(`.`)}.`;
+};
 
 export function getComments(data, id) {
   const commetnsData = data.reduce((commetns, i) => {
