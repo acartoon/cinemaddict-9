@@ -3,14 +3,14 @@ import {profileTemplate} from './components/profile.js';
 import {filtersTemplate} from './components/filters.js';
 import {statsTemplate} from './components/stats.js';
 import {sortTemplate} from './components/sort.js';
-import {btnShowMoreTemplate} from './components/btn-show-more.js';
 import {movie, filters, comments, countWatched} from './data.js';
-import {render, unrender, Position, renderElement, getComments} from './utils.js';
+import {renderElement} from './utils.js';
 import PageController from './controllers/page-controller.js';
 
 const headerContainer = document.body.querySelector(`.header`);
 const mainContainer = document.body.querySelector(`.main`);
 
+<<<<<<< HEAD
 const renderFilmsListContainer = (container, className) => {
   const filmsList = document.createElement(`section`);
   filmsList.classList.add(`films-list${className}`);
@@ -73,6 +73,8 @@ const renderMovie = (movieData, commentsData, container) => {
 =======
 >>>>>>> module5-task1
 
+=======
+>>>>>>> module5-task1
 const renderFilters = () => mainContainer.querySelector(`.main-navigation`)
   .insertAdjacentHTML(`afterBegin`, filters.map(filtersTemplate).join(``));
 
@@ -95,22 +97,13 @@ renderFilters();
 renderElement(mainContainer.querySelector(`.main-navigation`), statsTemplate());
 renderElement(mainContainer, sortTemplate());
 
-// filmsContainer
-const filmsContainer = document.createElement(`section`);
-filmsContainer.classList.add(`films`);
+const movieContainer = document.createElement(`section`);
+movieContainer.classList.add(`films`);
 
-renderElement(mainContainer, filmsContainer.outerHTML);
+renderElement(mainContainer, movieContainer.outerHTML);
 
 const pageController = new PageController(mainContainer.querySelector(`.films`), movie, comments);
 pageController.init();
 
 const footerStatistics = document.querySelector(`.footer__statistics p`);
 footerStatistics.innerHTML = `${movie.length} movies inside`;
-
-// btn
-// renderElement(mainContainer.querySelector(`.films-list`), btnShowMoreTemplate());
-
-const btnShowMore = mainContainer.querySelector(`.films-list__show-more`);
-
-
-// btnShowMore.addEventListener(`click`, clickBtn);
