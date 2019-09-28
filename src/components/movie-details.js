@@ -1,42 +1,28 @@
 import MovieBaseComponent from './movie-base-component.js';
-import {render, unrender, Position, render2} from '../utils.js';
+import {render, unrender, Position} from '../utils.js';
 import MovieCommentsComponent from './movie-comments-component.js';
-import BtnState from './btn-state.js';
+import MovieDetailsBtnState from './movie-details-btn-state.js';
 
 
 export default class MovieDetails extends MovieBaseComponent {
-  constructor(comments, data) {
+  constructor(comments, data, onDataChange) {
     super(comments, data);
     this._movieCommentsComponent = new MovieCommentsComponent(this._comments);
+    this.onDataChange = onDataChange;
+    this._movieDetailsBtnState = new MovieDetailsBtnState(this._watchlist, this._watched, this._favorite, this.onDataChange);
+    
   }
 
   init() {
     render(this.getElement().querySelector(`.form-details__bottom-container`), this._movieCommentsComponent.getElement(), Position.BEFOREEND);
-    const container = this.getElement().querySelector(`.film-details__controls`);
-    const btnDatat = [
-      {stateData: this._watchlist, name: `watchlist`, label: `Add to watchlist`},
-      {stateData: this._watched, name: `watched`, label: `Already watched`},
-      {stateData: this._favorite, name: `favorite`, label: `Add to favorites`},
-    ]
-
-    btnDatat.forEach((i) => {
-      const btnState = new BtnState(i);
-      render2(container, btnState.getTest());
-    });
+    render(this.getElement().querySelector(`.form-details__top-container`), this._movieDetailsBtnState.getElement(), Position.BEFOREEND);
   }
 
-  _renderBtn() {
-    const container = this.getElement().querySelector(`.film-details__controls`);
-    const btn = [
-      {stateData: this._watchlist, name: `watchlist`, label: `Add to watchlist`},
-      {stateData: this._watched, name: `watched`, label: `Already watched`},
-      {stateData: this._favorite, name: `favorite`, label: `Add to favorites`},
-    ]
-
-    btn.forEach((i) => {
-      const btnState = new BtnState(i);
-      render2(container, btnState.getTest());
-    });
+  renderState(watchlist, watched, favorite) {
+    console.log(`render`)
+    this._movieDetailsBtnState = new MovieDetailsBtnState(watchlist, watched, favorite, this.onDataChange);
+    const container = this.getElement().querySelector(`.form-details__top-container`);
+    container.replaceChild(this._movieDetailsBtnState.getElement(), container.lastChild);
   }
   
   getTemplate() {
@@ -102,8 +88,6 @@ export default class MovieDetails extends MovieBaseComponent {
               </p>
             </div>
           </div>
-          <section class="film-details__controls">
-          </section>
         </div>
         <div class="form-details__bottom-container">
           
