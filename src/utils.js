@@ -54,7 +54,13 @@ export function renderElement(container, template, type = `beforeend`) {
 export const createElement = (template) => {
   const newElement = document.createElement(`div`);
   newElement.innerHTML = template;
-  return newElement.firstChild;
+  return newElement.lastChild;
+};
+
+export const createElementTest = (template) => {
+  const newElement = document.createElement(`div`);
+  newElement.innerHTML = template;
+  return newElement;
 };
 
 export const Position = {
@@ -68,6 +74,14 @@ export const render = (container, element, place) => {
     'Position.BEFOREEND': container.append(element),
   };
   return places[place];
+};
+
+export const render2 = (container, element, place) => {
+  // const places = {
+  //   'Position.AFTERBEGIN': container.insertAdjacentHTML(`afterbegin`, element),
+  //   'Position.BEFOREEND': container.insertAdjacentHTML(`beforeend`, element),
+  // };
+  return container.insertAdjacentHTML(`beforeend`, element.innerHTML);
 };
 
 export const unrender = (element) => {

@@ -6,6 +6,7 @@ export default class MovieList extends AbstractComponent {
     this._isExtra = isExtra;
     this._title = title;
   }
+  
   getTemplate() {
     return `<section class="films-list${this._isExtra ? `--extra` : ``}">
     <h2 class="films-list__title ${this._isExtra ? `` : `visually-hidden`}">${this._title}</h2>
