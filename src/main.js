@@ -30,7 +30,7 @@ renderElement(mainContainer, navContainer.outerHTML);
 renderFilters();
 renderElement(mainContainer.querySelector(`.main-navigation`), statsTemplate());
 
-const pageController = new PageController(document.body, movie, comments);
+const pageController = new PageController(mainContainer, movie, comments);
 pageController.init();
 
 const footerStatistics = document.querySelector(`.footer__statistics p`);

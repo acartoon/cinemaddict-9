@@ -1,13 +1,47 @@
 import MovieBaseComponent from './movie-base-component.js';
+import {render, unrender, Position, render2} from '../utils.js';
+import MovieCommentsComponent from './movie-comments-component.js';
+import BtnState from './btn-state.js';
+
 
 export default class MovieDetails extends MovieBaseComponent {
   constructor(comments, data) {
     super(comments, data);
+    this._movieCommentsComponent = new MovieCommentsComponent(this._comments);
   }
 
+  init() {
+    render(this.getElement().querySelector(`.form-details__bottom-container`), this._movieCommentsComponent.getElement(), Position.BEFOREEND);
+    const container = this.getElement().querySelector(`.film-details__controls`);
+    const btnDatat = [
+      {stateData: this._watchlist, name: `watchlist`, label: `Add to watchlist`},
+      {stateData: this._watched, name: `watched`, label: `Already watched`},
+      {stateData: this._favorite, name: `favorite`, label: `Add to favorites`},
+    ]
+
+    btnDatat.forEach((i) => {
+      const btnState = new BtnState(i);
+      render2(container, btnState.getTest());
+    });
+  }
+
+  _renderBtn() {
+    const container = this.getElement().querySelector(`.film-details__controls`);
+    const btn = [
+      {stateData: this._watchlist, name: `watchlist`, label: `Add to watchlist`},
+      {stateData: this._watched, name: `watched`, label: `Already watched`},
+      {stateData: this._favorite, name: `favorite`, label: `Add to favorites`},
+    ]
+
+    btn.forEach((i) => {
+      const btnState = new BtnState(i);
+      render2(container, btnState.getTest());
+    });
+  }
+  
   getTemplate() {
     return `<section class="film-details">
-      <form class="film-details__inner" action="" method="get">
+    <form class="film-details__inner" action="" method="get">
         <div class="form-details__top-container">
           <div class="film-details__close">
             <button class="film-details__close-btn" type="button">close</button>
@@ -68,72 +102,13 @@ export default class MovieDetails extends MovieBaseComponent {
               </p>
             </div>
           </div>
-    
           <section class="film-details__controls">
-            <input type="checkbox" class="film-details__control-input visually-hidden" id="watchlist" name="watchlist" ${this._watchlist ? `checked` : ``}>
-            <label for="watchlist" class="film-details__control-label film-details__control-label--watchlist">Add to watchlist</label>
-    
-            <input type="checkbox" class="film-details__control-input visually-hidden" id="watched" name="watched" ${this._watched ? `checked` : ``}>
-            <label for="watched" class="film-details__control-label film-details__control-label--watched">Already watched</label>
-    
-            <input type="checkbox" class="film-details__control-input visually-hidden" id="favorite" name="favorite" ${this._favorite ? `checked` : ``}>
-            <label for="favorite" class="film-details__control-label film-details__control-label--favorite">Add to favorites</label>
           </section>
         </div>
-    
         <div class="form-details__bottom-container">
-          <section class="film-details__comments-wrap">
-            <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${this._comments.length}</span></h3>
-    
-            <ul class="film-details__comments-list">
-  ${this._comments.map((i) => (
-    `<li class="film-details__comment">
-    <span class="film-details__comment-emoji">
-      <img src="./images/emoji/${i.emotion}.png" width="55" height="55" alt="emoji">
-    </span>
-    <div>
-      <p class="film-details__comment-text">${i.comment}</p>
-      <p class="film-details__comment-info">
-        <span class="film-details__comment-author">${i.author}</span>
-        <span class="film-details__comment-day">${i.date}</span>
-        <button class="film-details__comment-delete">Delete</button>
-      </p>
+          
     </div>
-  </li>`
-  )).join(``)}
-            </ul>
-            <div class="film-details__new-comment">
-              <div for="add-emoji" class="film-details__add-emoji-label"></div>
-    
-              <label class="film-details__comment-label">
-                <textarea class="film-details__comment-input" placeholder="Select reaction below and write comment here" name="comment"></textarea>
-              </label>
-    
-              <div class="film-details__emoji-list">
-                <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-smile" value="sleeping">
-                <label class="film-details__emoji-label" for="emoji-smile">
-                  <img src="./images/emoji/smile.png" width="30" height="30" alt="emoji">
-                </label>
-    
-                <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-sleeping" value="neutral-face">
-                <label class="film-details__emoji-label" for="emoji-sleeping">
-                  <img src="./images/emoji/sleeping.png" width="30" height="30" alt="emoji">
-                </label>
-    
-                <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-gpuke" value="grinning">
-                <label class="film-details__emoji-label" for="emoji-gpuke">
-                  <img src="./images/emoji/puke.png" width="30" height="30" alt="emoji">
-                </label>
-    
-                <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-angry" value="grinning">
-                <label class="film-details__emoji-label" for="emoji-angry">
-                  <img src="./images/emoji/angry.png" width="30" height="30" alt="emoji">
-                </label>
-              </div>
-            </div>
-          </section>
-        </div>
-      </form>
-    </section>`.trim();
+  </form>
+  </section>`;
   }
 }
