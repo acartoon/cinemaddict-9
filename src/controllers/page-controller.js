@@ -19,65 +19,74 @@ export default class PageController {
     this._movieToRender = null;
     this._SIDE_BLOCK_LENGTH = 2;
     this._btnShowMore = new BtnShowMore(this._onBtnClick.bind(this));
+    this.onDataChange = this.onDataChange.bind(this);
   }
 
   init() {
+    this._movieToRender = (this._movieData.length < this._MAIN_BLOCK_LENGTH) ? this._movieData.length : this._MAIN_BLOCK_LENGTH;
     render(this._container, this._sort.getElement(), Position.BEFOREEND);
     render(this._container, this._movieContainer.getElement(), Position.BEFOREEND);
-
-    this._movieToRender = (this._movieData.length < this._MAIN_BLOCK_LENGTH) ? this._movieData.length : this._MAIN_BLOCK_LENGTH;
-    this._renderMovieList(this._allFilmsList, this._movieData.slice(0, this._movieToRender));
-    this._renderMovieList(this._topRatedFilmsList, this._sortingMovieToRated().slice(0, this._SIDE_BLOCK_LENGTH));
-    this._renderMovieList(this._mostCommentedFilmsList, this._sortingMovieToComments().slice(0, this._SIDE_BLOCK_LENGTH));
-    render(this._allFilmsList.getElement(), this._btnShowMore.getElement(), Position.BEFOREEND);
-  }
-
-    onDataChange(newData, oldData) {
-      const index = this._films.findIndex((it) => it.id === oldData.id);
-      this._films[index] = newData;
-      this._renderBoard_(index);
-    }
-
-  _renderMovieBoard(data, container) {
-    data.forEach((i) => new MovieController(i, getComments(this._commentsData, i.id), container).init());
-  }
-  
-  _renderMovieList(movieList, data) {
-    render(this._movieContainer.getElement(), movieList.getElement(), Position.BEFOREEND);
-    const container = movieList.getElement().querySelector(`.films-list__container`);
-    this._renderMovieBoard(data, container);
-
-    //если с флагом
+    render(this._movieContainer.getElement(), this._allFilmsList.getElement(), Position.BEFOREEND);
+    render(this._movieContainer.getElement(), this._topRatedFilmsList.getElement(), Position.BEFOREEND);
+    render(this._movieContainer.getElement(), this._mostCommentedFilmsList.getElement(), Position.BEFOREEND);
+    this._renderMovieBoard(this._movieData, this._commentsData);
     
+    if(this._movieToRender <= this._movieData.length)
+      render(this._allFilmsList.getElement(), this._btnShowMore.getElement(), Position.BEFOREEND);
   }
 
-  _sortingMovieToComments() {
-    let commentsDataOnMovie = this._movieData.map((i) => getComments(this._commentsData, i.id));
+  onDataChange(newData, oldData) {
+    const index = this._movieData.findIndex((it) => it.id === oldData.id);
+    this._movieData[index] = newData;
+    this._renderMovieBoard(this._movieData, this._commentsData);
+  }
+
+  _renderMovieBoard(movieData, commentsData) {
+    const movieLists = [
+      {container: this._allFilmsList, data: movieData.slice(0, this._movieToRender)},
+      {container: this._topRatedFilmsList, data: this._sortingMovieToRated(movieData).slice(0, this._SIDE_BLOCK_LENGTH)},
+      {container: this._mostCommentedFilmsList, data: this._sortingMovieToComments(movieData, commentsData).slice(0, this._SIDE_BLOCK_LENGTH)},
+    ]
+
+    movieLists.forEach((i) => {
+      const container = i.container.getElement().querySelector(`.films-list__container`);
+      container.innerHTML = ``;
+      i.data.forEach((a) => this._renderMovie(a, commentsData, container));
+    })
+  }
+
+  _renderMovie(movieData, commentsData, container) {
+    const movieController = new MovieController(movieData, getComments(commentsData, movieData.id), container, this.onDataChange);
+    movieController.init();
+  }
+
+  _sortingMovieToComments(movieData, commentsData) {
+    let commentsDataOnMovie = movieData.map((i) => getComments(commentsData, i.id));
     let sortingCommentsDataOnMovie = commentsDataOnMovie.slice().sort((a, b) => b.length - a.length);
     let sortingMovieID = sortingCommentsDataOnMovie.map((i) => i[0].idFilm);
 
-    const movieData = sortingMovieID.reduce((movie, i) => {
-      for (let a = 0; a < this._movieData.length; a++) {
-        if (i === this._movieData[a].id) {
-          movie.push(this._movieData[a]);
+    const SortmovieData = sortingMovieID.reduce((movie, i) => {
+      for (let a = 0; a < movieData.length; a++) {
+        if (i === movieData[a].id) {
+          movie.push(movieData[a]);
         }
       }
       return movie;
     }, []);
-    return movieData;
+    return SortmovieData;
   }
 
-  _sortingMovieToRated() {
-    return this._movieData.slice().sort((a, b) => b.rating - a.rating);
+  _sortingMovieToRated(movieData) {
+    return movieData.slice().sort((a, b) => b.rating - a.rating);
   }
-
 
   _onBtnClick(evt) {
     evt.preventDefault();
+    console.log('click')
     const movieData = this._movieData.slice(this._movieToRender, this._movieToRender + this._MAIN_BLOCK_LENGTH);
     this._movieToRender += this._MAIN_BLOCK_LENGTH;
 
-    this._renderMovieBoard(movieData, this._allFilmsList.getElement().querySelector(`.films-list__container`));
+    movieData.forEach((i) => this._renderMovie(i, this._commentsData, this._allFilmsList.getElement().querySelector(`.films-list__container`)));
 
     if (this._movieData.length <= this._movieToRender) {
       this._btnShowMore.getElement().classList.add(`visually-hidden`);
@@ -90,11 +99,10 @@ export default class PageController {
 
     const movieDataToRender = {
       'date': this._movieData.slice(0, this._movieToRender).sort((a, b) => a.releaseDate - b.releaseDate),
-      'rating': this._sortingMovieToRated().slice(0, this._movieToRender),
+      'rating': this._sortingMovieToRated(this._movieData).slice(0, this._movieToRender),
       'default': this._movieData.slice(0, this._movieToRender),
     };
-    this._renderMovieBoard(movieDataToRender[sortType], container);
+
+    movieDataToRender[sortType].forEach((i) => this._renderMovie(i, this._commentsData, container));
   }
-
-
 }
