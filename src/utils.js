@@ -7,20 +7,12 @@ export const getRandomTime = () => {
   return `${Math.floor(munute / 60)} h ${Math.floor(munute % 60)} m`;
 };
 
-export const descriptionFilm = (description) => {
+export const getDescriptionFilm = (description) => {
   const descriptionArray = getRandomElements(description.split(`. `), getRandomInteger(3, 1), getRandomInteger);
   return `${descriptionArray.join(`.`)}.`;
 };
 
-export function getComments(data, id) {
-  const commetnsData = data.reduce((commetns, i) => {
-    if (i.idFilm === id) {
-      commetns.push(i);
-    }
-    return commetns;
-  }, []);
-  return commetnsData;
-}
+export const getComments = (data, id) => data.filter(({idFilm}) => idFilm === id);
 
 export function getRandomDate() {
   let randomYear = getRandomInteger(1930, 1990);
@@ -29,22 +21,21 @@ export function getRandomDate() {
   return new Date(randomYear, randomMonth, randomDate);
 }
 
-export const counterFilters = (array, data) => {
-  return array.reduce((total, i) => (i[data] ? total + 1 : total), 0);
-};
+export const getCounFilters = (movieData, filterName) => movieData.reduce((total, i) => (i[filterName] ? total + 1 : total), 0);
 
-export const generateCommetnts = (length, comment, comments) => {
+export const generateComments = (length, getComment) => {
+  const comments = [];
   for (let a = 0; a < length; a++) {
-    let filmComments = new Array(getRandomInteger(4)).fill(``).map(comment);
+    let filmComments = new Array(getRandomInteger(4)).fill(``).map(getComment);
     filmComments.forEach((i) => {
       i.idFilm = a;
       comments.push(i);
     });
   }
-
   for (let i = 0; i < comments.length; i++) {
     comments[i].id = i;
   }
+  return comments;
 };
 
 export function renderElement(container, template, type = `beforeend`) {

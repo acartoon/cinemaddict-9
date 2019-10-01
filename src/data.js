@@ -1,11 +1,11 @@
 import {
   getRandomElements,
-  descriptionFilm,
+  getDescriptionFilm,
   getRandomDate,
   getRandomInteger,
   getRandomTime,
-  counterFilters,
-  generateCommetnts
+  getCounFilters,
+  generateComments
 } from './utils.js';
 
 const MOVIE_LENGTH = 15;
@@ -45,7 +45,6 @@ const description = `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cr
 const posters = [`./images/posters/made-for-each-other.png`, `./images/posters/popeye-meets-sinbad.png`, `./images/posters/sagebrush-trail.jpg`, `./images/posters/santa-claus-conquers-the-martians.jpg`, `./images/posters/the-dance-of-life.jpg`, `./images/posters/the-great-flamarion.jpg`, `./images/posters/the-man-with-the-golden-arm.jpg`];
 const emojis = [`smile`, `sleeping`, `puke`, `angry`];
 const movie = [];
-const comments = [];
 
 const generateMovie = () => ({
   id: null,
@@ -56,7 +55,7 @@ const generateMovie = () => ({
   rating: getRandomInteger(10),
   ownrating: getRandomInteger(9),
   runtime: getRandomTime(),
-  description: descriptionFilm(description),
+  description: getDescriptionFilm(description),
   watchlist: Boolean(Math.round(Math.random())),
   watched: Boolean(Math.round(Math.random())),
   favorite: Boolean(Math.round(Math.random())),
@@ -68,10 +67,10 @@ const generateMovie = () => ({
   poster: posters[getRandomInteger(6)],
 });
 
-const generateComment = () => ({
+const getComment = () => ({
   id: null,
   idFilm: null,
-  comment: descriptionFilm(description),
+  comment: getDescriptionFilm(description),
   author: Array.from(namesPeople)[getRandomInteger(Array.from(namesPeople).length-1)],
   date: `${getRandomInteger(10, 2)} days ago`,
   emotion: emojis[getRandomInteger(0, 3)],
@@ -82,9 +81,8 @@ for(let i = 0; i < MOVIE_LENGTH; i++ ) {
   movie[i] = {...movie[i], id: i, name: Array.from(filmNames)[i], originalName: Array.from(filmNames)[i]};
 }
 
-generateCommetnts(MOVIE_LENGTH, generateComment, comments);
-
-const countWatched = counterFilters(movie, `watched`);
+const comments = generateComments(MOVIE_LENGTH, getComment);
+const countWatched = getCounFilters(movie, `watched`);
 
 const filters = [
   {
@@ -94,7 +92,7 @@ const filters = [
   },
   {
     title: `Watchlist`,
-    count: counterFilters(movie, `watchlist`),
+    count: getCounFilters(movie, `watchlist`),
     link: `Watchlist`,
   },
   {
@@ -104,7 +102,7 @@ const filters = [
   },
   {
     title: `Favorites`,
-    count: counterFilters(movie, `favorite`),
+    count: getCounFilters(movie, `favorite`),
     link: `favorites`,
   },
 ];

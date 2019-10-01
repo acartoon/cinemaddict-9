@@ -33,34 +33,31 @@ export default class PageController {
     render(this._allFilmsList.getElement(), this._btnShowMore.getElement(), Position.BEFOREEND);
   }
 
-  _renderMovieBoard(data, container) {
-    data.forEach((i) => this._renderMovie(i, getComments(this._commentsData, i.id), container));
+  _renderMovieBoard(movieData, container) {
+    movieData.forEach((i) => this._renderMovie(i, getComments(this._commentsData, i.id), container));
   }
 
   _sortingMovieToComments() {
-    let commentsDataOnMovie = this._movieData.map((i) => getComments(this._commentsData, i.id));
-    let sortingCommentsDataOnMovie = commentsDataOnMovie.slice().sort((a, b) => b.length - a.length);
-    let sortingMovieID = sortingCommentsDataOnMovie.map((i) => i[0].idFilm);
-
-    const movieData = sortingMovieID.reduce((movie, i) => {
-      for (let a = 0; a < this._movieData.length; a++) {
-        if (i === this._movieData[a].id) {
-          movie.push(this._movieData[a]);
-        }
-      }
-      return movie;
-    }, []);
-    return movieData;
+    return this._movieData
+    .map(i => ({
+      ...i,
+      commentsLength: getComments(this._commentsData, i.id).length
+    }))
+    .sort((a, b) => b.commentsLength - a.commentsLength)
+    .map(item => {
+      delete item.commentsLength;
+      return item;
+    })
   }
 
   _sortingMovieToRated() {
     return this._movieData.slice().sort((a, b) => b.rating - a.rating);
   }
 
-  _renderMovieList(movieList, data) {
+  _renderMovieList(movieList, movieData) {
     render(this._movieContainer.getElement(), movieList.getElement(), Position.BEFOREEND);
     const container = movieList.getElement().querySelector(`.films-list__container`);
-    this._renderMovieBoard(data, container);
+    this._renderMovieBoard(movieData, container);
   }
 
   _renderMovie(movieData, commentsData, container) {
@@ -69,28 +66,36 @@ export default class PageController {
     const openMovieDetails = [`.film-card__poster`, `.film-card__title`, `.film-card__comments`];
 
     const renderMovieDetails = () => {
-      render(this._container, movieDetailsComponent.getElement(), Position.BEFOREEND);
-      document.addEventListener(`keydown`, onEscKeyDown);
+      const onEscKeyDown = (evt) => {
+        if (evt.key === `Escape` || evt.key === `Esc`) {
+          unrenderMovieDetails();
+          document.removeEventListener(`keydown`, onEscKeyDown);
+        }
+      };
+      
+      const unrenderMovieDetails = () => {
+        commentInput.removeEventListener(`focus`,  onFocusInput);
+        commentInput.removeEventListener(`blur`, onBlurInput);
+        closeBtn.removeEventListener(`click`, unrenderMovieDetails);
+        unrender(movieDetailsComponent.getElement());
+        movieDetailsComponent.removeElement();
+      };
 
       const commentInput = movieDetailsComponent.getElement()
         .querySelector(`.film-details__comment-input`);
 
-      commentInput.addEventListener(`focus`, () => {
-        document.removeEventListener(`keydown`, onEscKeyDown);
-      });
+      const closeBtn = movieDetailsComponent.getElement()
+        .querySelector(`.film-details__close-btn`);
 
-      commentInput.addEventListener(`blur`, () => {
-        document.addEventListener(`keydown`, onEscKeyDown);
-      });
+      render(this._container, movieDetailsComponent.getElement(), Position.BEFOREEND);
+      document.addEventListener(`keydown`, onEscKeyDown);
 
-      movieDetailsComponent.getElement()
-        .querySelector(`.film-details__close-btn`)
-          .addEventListener(`click`, unrenderMovieDetails);
-    };
+      const onFocusInput = () => document.removeEventListener(`keydown`, onEscKeyDown);
+      const onBlurInput = () => document.addEventListener(`keydown`, onEscKeyDown);
 
-    const unrenderMovieDetails = () => {
-      unrender(movieDetailsComponent.getElement());
-      movieDetailsComponent.removeElement();
+      commentInput.addEventListener(`focus`,  onFocusInput);
+      commentInput.addEventListener(`blur`, onBlurInput);
+      closeBtn.addEventListener(`click`, unrenderMovieDetails);
     };
 
     openMovieDetails.forEach((i) => {
@@ -99,12 +104,6 @@ export default class PageController {
       .addEventListener(`click`, renderMovieDetails);
     });
 
-    const onEscKeyDown = (evt) => {
-      if (evt.key === `Escape` || evt.key === `Esc`) {
-        unrenderMovieDetails();
-        document.removeEventListener(`keydown`, onEscKeyDown);
-      }
-    };
     render(container, movieComponent.getElement(), Position.BEFOREEND);
   }
 
