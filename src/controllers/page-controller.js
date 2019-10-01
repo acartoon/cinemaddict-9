@@ -19,44 +19,36 @@ export default class PageController {
     this._movieToRender = null;
     this._SIDE_BLOCK_LENGTH = 2;
     this._btnShowMore = new BtnShowMore(this._onBtnClick.bind(this));
-    this.onDataChange = this.onDataChange.bind(this);
+    this.onDataChange = this.onDataChange.bind(this)
   }
 
   init() {
     this._movieToRender = (this._movieData.length < this._MAIN_BLOCK_LENGTH) ? this._movieData.length : this._MAIN_BLOCK_LENGTH;
     render(this._container, this._sort.getElement(), Position.BEFOREEND);
     render(this._container, this._movieContainer.getElement(), Position.BEFOREEND);
-    render(this._movieContainer.getElement(), this._allFilmsList.getElement(), Position.BEFOREEND);
-    render(this._movieContainer.getElement(), this._topRatedFilmsList.getElement(), Position.BEFOREEND);
-    render(this._movieContainer.getElement(), this._mostCommentedFilmsList.getElement(), Position.BEFOREEND);
-    this._renderMovieBoard(this._movieData, this._commentsData);
+
+    this._renderMovieList(this._allFilmsList, this._movieData.slice(0, this._movieToRender));
+    this._renderMovieList(this._topRatedFilmsList, this._sortingMovieToRated(this._movieData).slice(0, this._SIDE_BLOCK_LENGTH));
+    this._renderMovieList(this._mostCommentedFilmsList, this._sortingMovieToComments(this._movieData, this._commentsData).slice(0, this._SIDE_BLOCK_LENGTH));
     
     if(this._movieToRender <= this._movieData.length)
       render(this._allFilmsList.getElement(), this._btnShowMore.getElement(), Position.BEFOREEND);
   }
-
-  onDataChange(newData, oldData) {
-    const index = this._movieData.findIndex((it) => it.id === oldData.id);
+  onDataChange(newData, oldData, el) {
+    const index = this._movieData.findIndex((i) => i.id === oldData.id);
     this._movieData[index] = newData;
-    this._renderMovieBoard(this._movieData, this._commentsData);
+    el.rerender(this._movieData[index].watchlist, this._movieData[index].watched, this._movieData[index].favorite);
   }
 
-  _renderMovieBoard(movieData, commentsData) {
-    const movieLists = [
-      {container: this._allFilmsList, data: movieData.slice(0, this._movieToRender)},
-      {container: this._topRatedFilmsList, data: this._sortingMovieToRated(movieData).slice(0, this._SIDE_BLOCK_LENGTH)},
-      {container: this._mostCommentedFilmsList, data: this._sortingMovieToComments(movieData, commentsData).slice(0, this._SIDE_BLOCK_LENGTH)},
-    ]
+  _renderMovieList(movieList, data) {
+    render(this._movieContainer.getElement(), movieList.getElement(), Position.BEFOREEND);
+    const container = movieList.getElement().querySelector(`.films-list__container`);
 
-    movieLists.forEach((i) => {
-      const container = i.container.getElement().querySelector(`.films-list__container`);
-      container.innerHTML = ``;
-      i.data.forEach((a) => this._renderMovie(a, commentsData, container));
-    })
+    data.forEach((i) => this._renderMovie(i, container));
   }
 
-  _renderMovie(movieData, commentsData, container) {
-    const movieController = new MovieController(movieData, getComments(commentsData, movieData.id), container, this.onDataChange);
+  _renderMovie(movieData, container) {
+    const movieController = new MovieController(movieData, getComments(this._commentsData, movieData.id), container, this.onDataChange);
     movieController.init();
   }
 
@@ -86,7 +78,7 @@ export default class PageController {
     const movieData = this._movieData.slice(this._movieToRender, this._movieToRender + this._MAIN_BLOCK_LENGTH);
     this._movieToRender += this._MAIN_BLOCK_LENGTH;
 
-    movieData.forEach((i) => this._renderMovie(i, this._commentsData, this._allFilmsList.getElement().querySelector(`.films-list__container`)));
+    movieData.forEach((i) => this._renderMovie(i, this._allFilmsList.getElement().querySelector(`.films-list__container`)));
 
     if (this._movieData.length <= this._movieToRender) {
       this._btnShowMore.getElement().classList.add(`visually-hidden`);
