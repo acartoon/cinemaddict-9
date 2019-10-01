@@ -4,30 +4,29 @@ import Movie from '../components/movie';
 import {cloneDeep} from 'lodash';
 
 export default class MovieController {
-  constructor(movieData, commentsData, container, onDataChange) {
+  constructor(movieData, commentsData, container, onDataChange, place) {
     this._container =  container;
     this._movieData = movieData;
     this._onDataChange = onDataChange;
     this.onDataChange = this.onDataChange.bind(this);
     this._commentsData = commentsData;
     this._movieComponent = new Movie(this._commentsData, this._movieData, this.onDataChange);
-    this._movieDetailsComponent = new MovieDetails(this._commentsData, this._movieData, this.onDataChange);
+    this._movieDetailsComponent = null;
+    // this._movieDetailsComponent = new MovieDetails(this._commentsData, this._movieData, this.onDataChange);
     this._onEscKeyDown = this._onEscKeyDown.bind(this);
     this._unrenderMovieDetails = this._unrenderMovieDetails.bind(this);
-  }
-
-  init() {
-    if(document.body.querySelector('.film-details')) {
-      this._movieDetailsComponent.renderState(this._movieData.watchlist, this._movieData.watched, this._movieData.favorite);
-    }
+    this._place = place;
     
+  }
+  
+  init() {
     const openMovieDetails = [`.film-card__poster`, `.film-card__title`, `.film-card__comments`];
     openMovieDetails.forEach((i) => {
       this._movieComponent.getElement()
       .querySelector(i)
       .addEventListener(`click`, this._renderMovieDetails.bind(this));
     });
-    render(this._container, this._movieComponent.getElement(), Position.BEFOREEND);
+    render(this._container, this._movieComponent.getElement(), this._place);
   };
 
   _initTmpData() {
@@ -39,9 +38,8 @@ export default class MovieController {
   }
 
   _renderMovieDetails() {
+    this._movieDetailsComponent = new MovieDetails(this._commentsData, this._movieData, this.onDataChange);
     render(document.body, this._movieDetailsComponent.getElement(), Position.BEFOREEND);
-    this._movieDetailsComponent.init();
-
     document.body.classList.add(`hide-overflow`);
     document.addEventListener(`keydown`, this._onEscKeyDown);
 
@@ -73,23 +71,30 @@ export default class MovieController {
       document.removeEventListener(`keydown`, this._onEscKeyDown);
     }
   };
+
+  rerender() {
+    if(this._movieDetailsComponent) {
+      this._movieDetailsComponent.rerenderBtnState(this._movieData.watchlist, this._movieData.watched, this._movieData.favorite);
+    }
+    this._movieComponent.rerenderBtnState(this._movieData.watchlist, this._movieData.watched, this._movieData.favorite);
+  }
   
   onDataChange(data) {
     this._initTmpData();
-    console.log(data)
-    
+    console.log()
     if(data === `watchlist`) {
-      this._tmpData.watchlist = !this._tmpData.watchlist;
+      this._movieData.watchlist = !this._tmpData.watchlist;
     }
     else if (data === `watched`) {
-      this._tmpData.watched = !this._tmpData.watched;
+      this._movieData.watched = !this._tmpData.watched;
       this._tmpData.ownrating = null;
     }
     else if (data === `favorite`){
-      this._tmpData.favorite = !this._tmpData.favorite
+      this._movieData.favorite = !this._tmpData.favorite;
     }
-    
-    this._onDataChange(this._tmpData, this._movieData);
+    const el = this;
+    this._onDataChange(this._movieData, this._tmpData, el);
+
     this._resetTmpData();
   }
 
