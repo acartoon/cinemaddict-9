@@ -62,21 +62,13 @@ export const Position = {
   BEFOREEND: `beforeend`,
 };
 
-export const render = (container, element, place = Position.BEFOREEND) => {
-// export const render = (container, element, place) => {
-  // const places = {
-  //   'Position.AFTERBEGIN': container.prepend(element),
-  //   'Position.BEFOREEND': container.append(element),
-  // };
-  // return places[place];
-  if(typeof place === `number`) {
-    container.replaceChild(element, container.children[place]);
-  } else if (place === Position.AFTERBEGIN) {
-    container.prepend(element);
-  } else if(place === Position.BEFOREEND) {
-    container.append(element);
-  }
-
+export const render = (container, element, place = `beforeend`) => {
+  const places = {
+    'Position.BEFORE': container.before(element),
+    'Position.AFTERBEGIN': container.prepend(element),
+    'Position.BEFOREEND': container.append(element),
+  };
+  return places[place];
 };
 
 export const unrender = (element) => {

@@ -2,8 +2,8 @@ import MovieBaseComponent from './movie-base-component.js';
 import {render, unrender, Position} from '../utils.js';
 import MovieCommentsComponent from './movie-comments-component.js';
 import MovieDetailsBtnState from './movie-details-btn-state.js';
-import MovieRating from './movie-rating.js';
-
+import MovieDetailsMiddle from './Movie-details-middle.js';
+import MovieOwnRating from './movie-own-rating.js';
 
 export default class MovieDetails extends MovieBaseComponent {
   constructor(comments, data, onDataChange) {
@@ -11,38 +11,52 @@ export default class MovieDetails extends MovieBaseComponent {
     this._movieCommentsComponent = new MovieCommentsComponent(this._comments);
     this.onDataChange = onDataChange;
     this._movieDetailsBtnState = [];
-    this._movieRating = null;
+    this._movieDetailsMiddle = new MovieDetailsMiddle(this._poster, this._name);
+    this._movieOwnRating = null;
+
     this._init();
   }
   
   _init() {
     render(this.getElement().querySelector(`.form-details__bottom-container`), this._movieCommentsComponent.getElement(), Position.BEFOREEND);
-    this._render(this._watchlist, this._watched, this._favorite);
+    this._renderBtnState(this._watchlist, this._watched, this._favorite);
     if(this._watched) {
-      this._renderRating();
+      this._renderMovieDetailsMiddle(this._ownrating);
     }
   }
 
-  _renderRating() {
-    const container = this.getElement().querySelector(`.form-details__middle-container`);
-    this._movieRating = new MovieRating(this._poster, this._name, this._rating, this.onDataChange)
-    render(container, this._movieRating.getElement())
+  _renderMovieDetailsMiddle(ownrating) {
+    console.log(this.getElement().querySelector(`.form-details__bottom-container`))
+    this.getElement().querySelector(`.form-details__bottom-container`).before(this._movieDetailsMiddle.getElement())
+
+    this._renderMovieOwnRating(ownrating);
   }
-  
-  _unrenderRating() {
-    unrender(this._movieRating.getElement());
-    this._movieRating.removeElement();
+
+  _renderMovieOwnRating(ownrating) {
+    const container = this._movieDetailsMiddle.getElement().querySelector(`.film-details__user-rating-inner`);
+    this._movieOwnRating = new MovieOwnRating(ownrating, this.onDataChange)
+    render(container, this._movieOwnRating.getElement(), Position.BEFOREEND);
+  }
+
+  _unrenderMovieDetailsMiddle() {
+    unrender(this._movieDetailsMiddle.getElement());
+    this._movieDetailsMiddle.removeElement();
   }
 
   rerenderBtnState(watchlist, watched, favorite) {
-    unrender(this._movieDetailsBtnState.getElement())
+    unrender(this._movieDetailsBtnState.getElement());
     this._movieDetailsBtnState.removeElement();
-    this._render(watchlist, watched, favorite);
-
-    watched ? this._renderRating() : this._unrenderRating();
+    this._renderBtnState(watchlist, watched, favorite);
+    watched ? this._renderMovieDetailsMiddle() : this._unrenderMovieDetailsMiddle();
   }
 
-  _render(watchlist, watched, favorite) {
+  rerenderOwnrating(ownrating) {
+    unrender(this._selectUserRating.getElement());
+    this._selectUserRating.removeElement();
+    this._renderUserRating(ownrating);
+  }
+
+  _renderBtnState(watchlist, watched, favorite) {
     const container = this.getElement().querySelector(`.form-details__top-container`);
     this._movieDetailsBtnState = new MovieDetailsBtnState(watchlist, watched, favorite, this.onDataChange);
     render(container, this._movieDetailsBtnState.getElement());
@@ -112,8 +126,7 @@ export default class MovieDetails extends MovieBaseComponent {
             </div>
           </div>
         </div>
-        <div class="form-details__middle-container">
-        </div>
+
         <div class="form-details__bottom-container">
           
     </div>

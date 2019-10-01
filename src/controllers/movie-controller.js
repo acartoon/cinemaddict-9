@@ -12,7 +12,6 @@ export default class MovieController {
     this._commentsData = commentsData;
     this._movieComponent = new Movie(this._commentsData, this._movieData, this.onDataChange);
     this._movieDetailsComponent = null;
-    // this._movieDetailsComponent = new MovieDetails(this._commentsData, this._movieData, this.onDataChange);
     this._onEscKeyDown = this._onEscKeyDown.bind(this);
     this._unrenderMovieDetails = this._unrenderMovieDetails.bind(this);
     this._place = place;
@@ -27,6 +26,7 @@ export default class MovieController {
       .addEventListener(`click`, this._renderMovieDetails.bind(this));
     });
     render(this._container, this._movieComponent.getElement(), this._place);
+    
   };
 
   _initTmpData() {
@@ -72,28 +72,37 @@ export default class MovieController {
     }
   };
 
-  rerender() {
-    if(this._movieDetailsComponent) {
-      this._movieDetailsComponent.rerenderBtnState(this._movieData.watchlist, this._movieData.watched, this._movieData.favorite);
+  rerender(typeDataChange) {
+    if(typeDataChange == `userState`) {
+      if(this._movieDetailsComponent) {
+        this._movieDetailsComponent.rerenderBtnState(this._movieData.watchlist, this._movieData.watched, this._movieData.favorite);
+      }
+      this._movieComponent.rerenderBtnState(this._movieData.watchlist, this._movieData.watched, this._movieData.favorite);
+      return;
     }
-    this._movieComponent.rerenderBtnState(this._movieData.watchlist, this._movieData.watched, this._movieData.favorite);
+    this._movieDetailsComponent.rerenderOwnrating(this._movieData.ownrating);
   }
   
   onDataChange(data) {
+    let typeDataChange = `userState`;
     this._initTmpData();
-    console.log()
+
     if(data === `watchlist`) {
       this._movieData.watchlist = !this._tmpData.watchlist;
     }
     else if (data === `watched`) {
       this._movieData.watched = !this._tmpData.watched;
-      this._tmpData.ownrating = null;
+      this._movieData.ownrating = null;
     }
     else if (data === `favorite`){
       this._movieData.favorite = !this._tmpData.favorite;
+    } else if (typeof data == `number`) {
+      this._movieData.ownrating = data;
+      typeDataChange = `ownrating`;
     }
+
     const el = this;
-    this._onDataChange(this._movieData, this._tmpData, el);
+    this._onDataChange(this._movieData, this._tmpData, el, typeDataChange);
 
     this._resetTmpData();
   }
