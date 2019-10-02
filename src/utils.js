@@ -34,17 +34,20 @@ export const counterFilters = (array, data) => {
 };
 
 export const generateCommetnts = (length, comment, comments) => {
+  const id = 0;
   for (let a = 0; a < length; a++) {
     let filmComments = new Array(getRandomInteger(4)).fill(``).map(comment);
     filmComments.forEach((i) => {
+      i.id = id;
       i.idFilm = a;
       comments.push(i);
     });
+    id++;
   }
 
-  for (let i = 0; i < comments.length; i++) {
-    comments[i].id = i;
-  }
+  // for (let i = 0; i < comments.length; i++) {
+  //   comments[i].id = i;
+  // }
 };
 
 export function renderElement(container, template, type = `beforeend`) {
