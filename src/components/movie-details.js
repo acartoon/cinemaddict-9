@@ -16,23 +16,23 @@ export default class MovieDetails extends MovieBaseComponent {
 
     this._init();
   }
-  
+
   _init() {
     render(this.getElement().querySelector(`.form-details__bottom-container`), this._movieCommentsComponent.getElement(), Position.BEFOREEND);
     this._renderBtnState(this._watchlist, this._watched, this._favorite);
-    if(this._watched) {
+    if (this._watched) {
       this._renderMovieRating(this._ownrating);
     }
   }
 
   _renderMovieRating(ownrating) {
-    this.getElement().querySelector(`.form-details__bottom-container`).before(this._movieRating.getElement())
+    this.getElement().querySelector(`.form-details__bottom-container`).before(this._movieRating.getElement());
     this._renderMovieOwnRating(ownrating);
   }
 
   _renderMovieOwnRating(ownrating) {
     const container = this._movieRating.getElement().querySelector(`.film-details__user-rating-inner`);
-    this._movieOwnRating = new MovieOwnRating(ownrating, this.onDataChange)
+    this._movieOwnRating = new MovieOwnRating(ownrating, this.onDataChange);
     render(container, this._movieOwnRating.getElement(), Position.BEFOREEND);
   }
 
@@ -45,7 +45,11 @@ export default class MovieDetails extends MovieBaseComponent {
     unrender(this._movieDetailsBtnState.getElement());
     this._movieDetailsBtnState.removeElement();
     this._renderBtnState(watchlist, watched, favorite);
-    watched ? this._renderMovieRating() : this._unrenderMovieRating();
+    if (watched && !this.getElement().contains(this._movieRating.getElement())) {
+      this._renderMovieRating();
+    } else if (!watched) {
+      this._unrenderMovieRating();
+    }
   }
 
   rerenderOwnrating(ownrating) {
@@ -59,7 +63,7 @@ export default class MovieDetails extends MovieBaseComponent {
     this._movieDetailsBtnState = new MovieDetailsBtnState(watchlist, watched, favorite, this.onDataChange);
     render(container, this._movieDetailsBtnState.getElement());
   }
-  
+
   getTemplate() {
     return `<section class="film-details">
     <form class="film-details__inner" action="" method="get">

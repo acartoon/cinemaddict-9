@@ -14,12 +14,12 @@ export default class MovieOwnRating extends AbstractComponent {
   }
 
   _init() {
-    for(let i = 1; i <= this._MAXRATING; i++) {
-      const userRatingInput = new UserRatingInput(i, this._rating)
-      const userRatingLabel = new UserRatingLabel(i, this.onDataChange)
+    for (let i = 1; i <= this._MAXRATING; i++) {
+      const userRatingInput = new UserRatingInput(i, this._rating);
+      const userRatingLabel = new UserRatingLabel(i, this.onDataChange);
 
-      render(this.getElement(), userRatingInput.getElement())
-      render(this.getElement(), userRatingLabel.getElement())
+      render(this.getElement(), userRatingInput.getElement(), Position.BEFOREEND);
+      render(this.getElement(), userRatingLabel.getElement(), Position.BEFOREEND);
     }
   }
 

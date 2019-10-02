@@ -1,3 +1,5 @@
+export const emojis = [`smile`, `sleeping`, `puke`, `angry`];
+
 export const getRandomInteger = (max, min = 1) => Math.round(min - 0.5 + Math.random() * (max - min + 1));
 
 export const getRandomElements = (arr, count, func) => new Array(count).fill(``).map(() => arr[func(0, arr.length - 1)]);
@@ -34,20 +36,16 @@ export const counterFilters = (array, data) => {
 };
 
 export const generateCommetnts = (length, comment, comments) => {
-  const id = 0;
+  let id = 0;
   for (let a = 0; a < length; a++) {
     let filmComments = new Array(getRandomInteger(4)).fill(``).map(comment);
     filmComments.forEach((i) => {
-      i.id = id;
+      i.id = id++;
       i.idFilm = a;
       comments.push(i);
     });
-    id++;
   }
 
-  // for (let i = 0; i < comments.length; i++) {
-  //   comments[i].id = i;
-  // }
 };
 
 export function renderElement(container, template, type = `beforeend`) {
