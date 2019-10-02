@@ -2,7 +2,7 @@ import MovieBaseComponent from './movie-base-component.js';
 import {render, unrender, Position} from '../utils.js';
 import MovieCommentsComponent from './movie-comments-component.js';
 import MovieDetailsBtnState from './movie-details-btn-state.js';
-import MovieDetailsMiddle from './Movie-details-middle.js';
+import MovieRating from './movie-rating.js';
 import MovieOwnRating from './movie-own-rating.js';
 
 export default class MovieDetails extends MovieBaseComponent {
@@ -11,7 +11,7 @@ export default class MovieDetails extends MovieBaseComponent {
     this._movieCommentsComponent = new MovieCommentsComponent(this._comments);
     this.onDataChange = onDataChange;
     this._movieDetailsBtnState = [];
-    this._movieDetailsMiddle = new MovieDetailsMiddle(this._poster, this._name);
+    this._movieRating = new MovieRating(this._poster, this._name);
     this._movieOwnRating = null;
 
     this._init();
@@ -21,39 +21,37 @@ export default class MovieDetails extends MovieBaseComponent {
     render(this.getElement().querySelector(`.form-details__bottom-container`), this._movieCommentsComponent.getElement(), Position.BEFOREEND);
     this._renderBtnState(this._watchlist, this._watched, this._favorite);
     if(this._watched) {
-      this._renderMovieDetailsMiddle(this._ownrating);
+      this._renderMovieRating(this._ownrating);
     }
   }
 
-  _renderMovieDetailsMiddle(ownrating) {
-    console.log(this.getElement().querySelector(`.form-details__bottom-container`))
-    this.getElement().querySelector(`.form-details__bottom-container`).before(this._movieDetailsMiddle.getElement())
-
+  _renderMovieRating(ownrating) {
+    this.getElement().querySelector(`.form-details__bottom-container`).before(this._movieRating.getElement())
     this._renderMovieOwnRating(ownrating);
   }
 
   _renderMovieOwnRating(ownrating) {
-    const container = this._movieDetailsMiddle.getElement().querySelector(`.film-details__user-rating-inner`);
+    const container = this._movieRating.getElement().querySelector(`.film-details__user-rating-inner`);
     this._movieOwnRating = new MovieOwnRating(ownrating, this.onDataChange)
     render(container, this._movieOwnRating.getElement(), Position.BEFOREEND);
   }
 
-  _unrenderMovieDetailsMiddle() {
-    unrender(this._movieDetailsMiddle.getElement());
-    this._movieDetailsMiddle.removeElement();
+  _unrenderMovieRating() {
+    unrender(this._movieRating.getElement());
+    this._movieRating.removeElement();
   }
 
   rerenderBtnState(watchlist, watched, favorite) {
     unrender(this._movieDetailsBtnState.getElement());
     this._movieDetailsBtnState.removeElement();
     this._renderBtnState(watchlist, watched, favorite);
-    watched ? this._renderMovieDetailsMiddle() : this._unrenderMovieDetailsMiddle();
+    watched ? this._renderMovieRating() : this._unrenderMovieRating();
   }
 
   rerenderOwnrating(ownrating) {
-    unrender(this._selectUserRating.getElement());
-    this._selectUserRating.removeElement();
-    this._renderUserRating(ownrating);
+    unrender(this._movieOwnRating.getElement());
+    this._movieOwnRating.removeElement();
+    this._renderMovieOwnRating(ownrating);
   }
 
   _renderBtnState(watchlist, watched, favorite) {
