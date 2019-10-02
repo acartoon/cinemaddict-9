@@ -1,6 +1,6 @@
 import MovieBaseComponent from './movie-base-component.js';
 import MovieBtnState from './movie-btn-state.js';
-import { render } from '../utils.js';
+import {render} from '../utils.js';
 
 export default class Movie extends MovieBaseComponent {
   constructor(comments, data, onDataChange) {
@@ -27,9 +27,9 @@ export default class Movie extends MovieBaseComponent {
     ];
 
     btnData.forEach((i) => {
-      const btn = new MovieBtnState(i.state, i.classBtn, i.data, i.title, this._onDataChange)
-      render(this.getElement().querySelector(`.film-card__controls`), btn.getElement())
-    })
+      const btn = new MovieBtnState(i.state, i.classBtn, i.data, i.title, this._onDataChange);
+      render(this.getElement().querySelector(`.film-card__controls`), btn.getElement());
+    });
   }
 
   getTemplate() {

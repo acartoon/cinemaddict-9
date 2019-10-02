@@ -14,6 +14,6 @@ export default class UserRatingInput extends AbstractComponent {
     class="film-details__user-rating-input visually-hidden" 
     value="${this._rating}" 
     id="rating-${this._rating}" 
-    ${this._rating == this._userRating ? `checked` : ``}>`
+    ${this._rating === this._userRating ? `checked` : ``}>`;
   }
 }

@@ -19,7 +19,9 @@ export default class PageController {
     this._movieToRender = null;
     this._SIDE_BLOCK_LENGTH = 2;
     this._btnShowMore = new BtnShowMore(this._onBtnClick.bind(this));
-    this.onDataChange = this.onDataChange.bind(this)
+    this.onDataChange = this.onDataChange.bind(this);
+    this.onChangeView = this.onChangeView.bind(this);
+    this._subscriptions = [];
   }
 
   init() {
@@ -30,9 +32,10 @@ export default class PageController {
     this._renderMovieList(this._allFilmsList, this._movieData.slice(0, this._movieToRender));
     this._renderMovieList(this._topRatedFilmsList, this._sortingMovieToRated(this._movieData).slice(0, this._SIDE_BLOCK_LENGTH));
     this._renderMovieList(this._mostCommentedFilmsList, this._sortingMovieToComments(this._movieData, this._commentsData).slice(0, this._SIDE_BLOCK_LENGTH));
-    
-    if(this._movieToRender <= this._movieData.length)
+
+    if (this._movieToRender <= this._movieData.length) {
       render(this._allFilmsList.getElement(), this._btnShowMore.getElement(), Position.BEFOREEND);
+    }
   }
   onDataChange(newData, oldData, el, typeDataChange) {
     const index = this._movieData.findIndex((i) => i.id === oldData.id);
@@ -48,8 +51,11 @@ export default class PageController {
   }
 
   _renderMovie(movieData, container) {
-    const movieController = new MovieController(movieData, getComments(this._commentsData, movieData.id), container, this.onDataChange);
+    const movieController = new MovieController(movieData, getComments(this._commentsData, movieData.id), container, this.onDataChange, this.onChangeView);
     movieController.init();
+    // movieController.setDefaultView();
+    // console.log(movieController.setDefaultView())
+    this._subscriptions.push(movieController.setDefaultView);
   }
 
   _sortingMovieToComments(movieData, commentsData) {
@@ -74,7 +80,6 @@ export default class PageController {
 
   _onBtnClick(evt) {
     evt.preventDefault();
-    console.log('click')
     const movieData = this._movieData.slice(this._movieToRender, this._movieToRender + this._MAIN_BLOCK_LENGTH);
     this._movieToRender += this._MAIN_BLOCK_LENGTH;
 
@@ -96,5 +101,9 @@ export default class PageController {
     };
 
     movieDataToRender[sortType].forEach((i) => this._renderMovie(i, this._commentsData, container));
+  }
+
+  onChangeView() {
+    this._subscriptions.forEach((subscription) => subscription());
   }
 }
