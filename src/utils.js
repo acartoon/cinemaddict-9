@@ -25,15 +25,22 @@ export const getCounFilters = (movieData, filterName) => movieData.reduce((total
 
 export const generateComments = (length, getComment) => {
   const comments = [];
+  let counter = 0;
   for (let a = 0; a < length; a++) {
-    let filmComments = new Array(getRandomInteger(4)).fill(``).map(getComment);
-    filmComments.forEach((i) => {
-      i.idFilm = a;
-      comments.push(i);
-    });
-  }
-  for (let i = 0; i < comments.length; i++) {
-    comments[i].id = i;
+    let filmComments = new Array(getRandomInteger(4)).fill(``).map(getComment)
+    // filmComments.forEach((i) => {
+    //     i.id = counter++;
+    //     i.idFilm = a;
+    // });
+
+  .forEach(({id, idFilm}) => {
+    id = counter++;
+    idFilm = a;
+  });
+
+    console.log(filmComments);
+    comments.push(filmComments);
+
   }
   return comments;
 };
