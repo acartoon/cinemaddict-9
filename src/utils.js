@@ -7,17 +7,12 @@ export const getRandomTime = () => {
   return `${Math.floor(munute / 60)} h ${Math.floor(munute % 60)} m`;
 };
 
-export const descriptionFilm = (description) => getRandomElements(description.split(`. `), getRandomInteger(3, 1), getRandomInteger).join(`. `);
+export const getDescriptionFilm = (description) => {
+  const descriptionArray = getRandomElements(description.split(`. `), getRandomInteger(3, 1), getRandomInteger);
+  return `${descriptionArray.join(`.`)}.`;
+};
 
-export function getComments(data, id) {
-  const commetnsData = data.reduce((commetns, item) => {
-    if (item.idFilm === id) {
-      commetns.push(item);
-    }
-    return commetns;
-  }, []);
-  return commetnsData;
-}
+export const getComments = (data, id) => data.filter(({idFilm}) => idFilm === id);
 
 export function getRandomDate() {
   let randomYear = getRandomInteger(1930, 1990);
@@ -26,22 +21,20 @@ export function getRandomDate() {
   return new Date(randomYear, randomMonth, randomDate);
 }
 
-export const counterFilters = (array, data) => {
-  return array.reduce((total, x) => (x[data] ? total + 1 : total), 0);
-};
+export const getCounFilters = (movieData, filterName) => movieData.reduce((total, i) => (i[filterName] ? total + 1 : total), 0);
 
-export const generateCommetnts = (length, comment, comments) => {
-  for (let i = 0; i < length; i++) {
-    let filmComments = new Array(getRandomInteger(4)).fill(``).map(comment);
-    filmComments.forEach((item) => {
-      item.idFilm = i;
-      comments.push(item);
+export const generateComments = (length, getComment) => {
+  const comments = [];
+  let counter = 0;
+  for (let a = 0; a < length; a++) {
+    let filmComments = new Array(getRandomInteger(4)).fill(``).map(getComment);
+    filmComments.forEach((i) => {
+        i.id = counter++;
+        i.idFilm = a;
     });
+    comments.push(filmComments);
   }
-
-  for (let i = 0; i < comments.length; i++) {
-    comments[i].id = i;
-  }
+  return comments;
 };
 
 export function renderElement(container, template, type = `beforeend`) {

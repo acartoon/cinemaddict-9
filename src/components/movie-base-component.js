@@ -1,4 +1,4 @@
-import {AbstractComponent} from './abstract-component.js';
+import AbstractComponent from './abstract-component.js';
 
 export default class MovieBaseComponent extends AbstractComponent {
   constructor(comments, {id, name, genres, rating, ownrating, runtime,
