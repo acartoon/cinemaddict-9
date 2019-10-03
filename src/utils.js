@@ -27,22 +27,12 @@ export const generateComments = (length, getComment) => {
   const comments = [];
   let counter = 0;
   for (let a = 0; a < length; a++) {
-    // let filmComments = new Array(getRandomInteger(4)).fill(``).map(getComment);
-
-    // filmComments.forEach((i) => {
-    //     i.id = counter++;
-    //     i.idFilm = a;
-    // });
-    
-    let filmComments = new Array(getRandomInteger(4)).fill(``).map(getComment)
-    .forEach((i) => {
-      i.id = counter++;
-      i.idFilm = a;
+    let filmComments = new Array(getRandomInteger(4)).fill(``).map(getComment);
+    filmComments.forEach((i) => {
+        i.id = counter++;
+        i.idFilm = a;
     });
-
-    console.log(filmComments);
     comments.push(filmComments);
-
   }
   return comments;
 };
