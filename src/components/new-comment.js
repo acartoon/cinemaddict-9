@@ -12,7 +12,7 @@ export default class NewComment extends AbstractComponent {
 
   _init() {
     const container = this.getElement().querySelector(`.film-details__emoji-list`);
-    emojis.map((i) => {
+    emojis.forEach((i) => {
       const emojiLabel = new EmojiLabel(i, this.onChangeEmotion);
       const emojiInput = new EmojiInput(i);
       render(container, emojiLabel.getElement(), Position.BEFOREEND);

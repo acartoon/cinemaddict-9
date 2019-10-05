@@ -1,6 +1,6 @@
 import {
   getRandomElements,
-  descriptionFilm,
+  getDescriptionFilm,
   getRandomDate,
   getRandomInteger,
   getRandomTime,
@@ -56,7 +56,7 @@ const generateMovie = () => ({
   rating: getRandomInteger(10),
   ownrating: getRandomInteger(9),
   runtime: getRandomTime(),
-  description: descriptionFilm(description),
+  description: getDescriptionFilm(description),
   watchlist: Boolean(Math.round(Math.random())),
   watched: Boolean(Math.round(Math.random())),
   favorite: Boolean(Math.round(Math.random())),
@@ -71,7 +71,7 @@ const generateMovie = () => ({
 const generateComment = () => ({
   id: null,
   idFilm: null,
-  comment: descriptionFilm(description),
+  comment: getDescriptionFilm(description),
   author: Array.from(namesPeople)[getRandomInteger(Array.from(namesPeople).length-1)],
   date: `${getRandomInteger(10, 2)} days ago`,
   emotion: emojis[getRandomInteger(0, 3)],

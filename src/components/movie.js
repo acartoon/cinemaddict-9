@@ -28,7 +28,8 @@ export default class Movie extends MovieBaseComponent {
     ];
 
     btnData.forEach((i) => {
-      const btn = new MovieBtnState(i.state, i.classBtn, i.data, i.title, this._onDataChange);
+      const btn = new MovieBtnState(i, this._onDataChange);
+      // const btn = new MovieBtnState(i.state, i.classBtn, i.data, i.title, this._onDataChange);
       render(this.getElement().querySelector(`.film-card__controls`), btn.getElement());
     });
   }

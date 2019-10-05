@@ -37,10 +37,10 @@ export default class PageController {
       render(this._allFilmsList.getElement(), this._btnShowMore.getElement(), Position.BEFOREEND);
     }
   }
-  onDataChange(newData, oldData, el, typeDataChange) {
+  onDataChange(newData, oldData, movie, typeDataChange) {
     const index = this._movieData.findIndex((i) => i.id === oldData.id);
     this._movieData[index] = newData;
-    el.rerender(typeDataChange);
+    movie.rerender(typeDataChange);
   }
 
   _renderMovieList(movieList, data) {
@@ -53,8 +53,6 @@ export default class PageController {
   _renderMovie(movieData, container) {
     const movieController = new MovieController(movieData, getComments(this._commentsData, movieData.id), container, this.onDataChange, this.onChangeView);
     movieController.init();
-    // movieController.setDefaultView();
-    // console.log(movieController.setDefaultView())
     this._subscriptions.push(movieController.setDefaultView);
   }
 
@@ -100,10 +98,11 @@ export default class PageController {
       'default': this._movieData.slice(0, this._movieToRender),
     };
 
-    movieDataToRender[sortType].forEach((i) => this._renderMovie(i, this._commentsData, container));
+    movieDataToRender[sortType].forEach((movie) => this._renderMovie(movie, container));
   }
 
   onChangeView() {
     this._subscriptions.forEach((subscription) => subscription());
+    // console.log(this._subscriptions)
   }
 }

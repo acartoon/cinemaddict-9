@@ -8,6 +8,7 @@ export default class UserRatingScore extends AbstractComponent {
     super();
     this._data = data;
     this._onDataChange = onDataChange;
+    this._maxRating = 10;
 
     this._init();
   }
@@ -18,7 +19,7 @@ export default class UserRatingScore extends AbstractComponent {
   }
 
   _init() {
-    for (let i = 1; i < 10; i++) {
+    for (let i = 1; i < this._maxRating; i++) {
       const filmDetailsInput = new FilmDetailsInput(i, this._data);
       const filmDetailsLabel = new FilmDetailsLabel(i, this._onDataChange);
 
