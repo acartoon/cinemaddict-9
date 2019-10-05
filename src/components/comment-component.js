@@ -1,7 +1,7 @@
 import AbstractComponent from './abstract-component.js';
 
 export default class CommentComponent extends AbstractComponent {
-  constructor({id, idFilm, emotion, comment, author, date}) {
+  constructor({id, idFilm, emotion, comment, author, date}, onDataChange) {
     super();
     this._id = id;
     this._emotion = emotion;
@@ -9,6 +9,9 @@ export default class CommentComponent extends AbstractComponent {
     this._comment = comment;
     this._author = author;
     this._date = date;
+    this._onDataChange = onDataChange;
+
+    this._onClick();
   }
 
   getTemplate() {
@@ -25,5 +28,13 @@ export default class CommentComponent extends AbstractComponent {
       </p>
       </div>
       </li>`;
+  }
+
+  _onClick() {
+    const deleteDtn = this.getElement().querySelector(`.film-details__comment-delete`);
+    deleteDtn.addEventListener(`click`, (evt) => {
+      evt.preventDefault();
+      this._onDataChange(`commentDelete`, this._id);
+    })
   }
 }

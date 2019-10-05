@@ -7,12 +7,25 @@ export default class Movie extends MovieBaseComponent {
   constructor(comments, data, onDataChange) {
     super(comments, data);
     this._onDataChange = onDataChange;
+    this._movieCommentsCount = null;
 
     this._init();
   }
 
   _init() {
     this._renderBtnState(this._watchlist, this._watched, this._favorite);
+    this.renderCommentsCount(this._comments.length);
+  }
+
+  renderCommentsCount(commentsCount) {
+    this._movieCommentsCount = new MovieCommentsCount(commentsCount);
+    this.getElement().querySelector(`.film-card__controls`).before(this._movieCommentsCount.getElement())
+  }
+
+  rerenderCommentsCount(commentsCount) {
+    unrender(this._movieCommentsCount.getElement());
+    this._movieCommentsCount.removeElement();
+    this.renderCommentsCount(commentsCount);
   }
 
   rerenderBtnState(watchlist, watched, favorite) {
@@ -44,7 +57,6 @@ export default class Movie extends MovieBaseComponent {
     </p>
     <img src="${this._poster}" alt="" class="film-card__poster">
     <p class="film-card__description">$${this._description.length < 140 ? this._description : `${this._description.slice(0, 139).trim()}…`}</p>
-    <a class="film-card__comments">${this._comments.length} comments</a>
     <form class="film-card__controls"></form>
     </article>`;
   }

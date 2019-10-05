@@ -20,7 +20,7 @@ export default class MovieBtnState extends AbstractComponent {
   _onClick() {
     this.getElement().addEventListener(`click`, (evt) => {
       evt.preventDefault();
-      this._onDataChange(this._state);
+      this._onDataChange(`userState`, this._state);
     });
   }
 }

@@ -28,7 +28,7 @@ export default class MovieDetailsBtnState extends AbstractComponent {
   _onClick() {
     this.getElement().addEventListener(`click`, (evt) => {
       if (evt.target.hasAttribute(`for`)) {
-        this._onDataChange(evt.target.getAttribute(`for`));
+        this._onDataChange(`userState`, evt.target.getAttribute(`for`));
       }
     });
   }

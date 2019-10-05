@@ -3,8 +3,10 @@ import {profileTemplate} from './components/profile.js';
 import {filtersTemplate} from './components/filters.js';
 import {statsTemplate} from './components/stats.js';
 import {movie, filters, comments, countWatched} from './data.js';
-import {renderElement} from './utils.js';
+import {renderElement, render, Position} from './utils.js';
 import PageController from './controllers/page-controller.js';
+import SearchComponent from './components/search-component.js';
+
 
 const headerContainer = document.body.querySelector(`.header`);
 const mainContainer = document.body.querySelector(`.main`);
@@ -32,6 +34,10 @@ renderElement(mainContainer.querySelector(`.main-navigation`), statsTemplate());
 
 const pageController = new PageController(mainContainer, movie, comments);
 pageController.init();
+
+const searchComponent = new SearchComponent();
+render(mainContainer, searchComponent.getElement(), Position.BEFOREEND);
+
 
 const footerStatistics = document.querySelector(`.footer__statistics p`);
 footerStatistics.innerHTML = `${movie.length} movies inside`;

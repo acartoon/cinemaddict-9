@@ -9,7 +9,7 @@ import moment from 'moment';
 export default class MovieDetails extends MovieBaseComponent {
   constructor(comments, data, onDataChange) {
     super(comments, data);
-    this._movieCommentsComponent = new MovieCommentsComponent(this._comments);
+    this._movieCommentsComponent = [];
     this.onDataChange = onDataChange;
     this._movieDetailsBtnState = [];
     this._movieRating = new MovieRating(this._poster, this._name);
@@ -19,27 +19,11 @@ export default class MovieDetails extends MovieBaseComponent {
   }
 
   _init() {
-    render(this.getElement().querySelector(`.form-details__bottom-container`), this._movieCommentsComponent.getElement(), Position.BEFOREEND);
+    this._renderComments(this._comments);
     this._renderBtnState(this._watchlist, this._watched, this._favorite);
     if (this._watched) {
       this._renderMovieRating(this._ownrating);
     }
-  }
-
-  _renderMovieRating(ownrating) {
-    this.getElement().querySelector(`.form-details__bottom-container`).before(this._movieRating.getElement());
-    this._renderMovieOwnRating(ownrating);
-  }
-
-  _renderMovieOwnRating(ownrating) {
-    const container = this._movieRating.getElement().querySelector(`.film-details__user-rating-inner`);
-    this._movieOwnRating = new MovieOwnRating(ownrating, this.onDataChange);
-    render(container, this._movieOwnRating.getElement(), Position.BEFOREEND);
-  }
-
-  _unrenderMovieRating() {
-    unrender(this._movieRating.getElement());
-    this._movieRating.removeElement();
   }
 
   rerenderBtnState(watchlist, watched, favorite) {
@@ -52,11 +36,42 @@ export default class MovieDetails extends MovieBaseComponent {
       this._unrenderMovieRating();
     }
   }
-
+  
   rerenderOwnrating(ownrating) {
     unrender(this._movieOwnRating.getElement());
     this._movieOwnRating.removeElement();
     this._renderMovieOwnRating(ownrating);
+  }
+
+  rerenderComments(commentsData) {
+    this._unrenderComments();
+    this._renderComments(commentsData);
+  }
+
+  _renderMovieRating(ownrating) {
+    this.getElement().querySelector(`.form-details__bottom-container`).before(this._movieRating.getElement());
+    this._renderMovieOwnRating(ownrating);
+  }
+
+  _renderComments(commentsData) {
+    this._movieCommentsComponent = new MovieCommentsComponent(commentsData, this.onDataChange);
+    render(this.getElement().querySelector(`.form-details__bottom-container`), this._movieCommentsComponent.getElement(), Position.BEFOREEND);
+  }
+  
+  _unrenderComments() {
+    unrender(this._movieCommentsComponent.getElement());
+    this._movieCommentsComponent.removeElement();
+  }
+
+  _renderMovieOwnRating(ownrating) {
+    const container = this._movieRating.getElement().querySelector(`.film-details__user-rating-inner`);
+    this._movieOwnRating = new MovieOwnRating(ownrating, this.onDataChange);
+    render(container, this._movieOwnRating.getElement(), Position.BEFOREEND);
+  }
+
+  _unrenderMovieRating() {
+    unrender(this._movieRating.getElement());
+    this._movieRating.removeElement();
   }
 
   _renderBtnState(watchlist, watched, favorite) {

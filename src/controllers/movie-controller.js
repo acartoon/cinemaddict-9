@@ -73,31 +73,43 @@ export default class MovieController {
     }
   }
 
-  rerender(typeDataChange) {
+  _onSendMsg(evt) {
+    if (evt.key == `Enter` && (evt.ctrlKey || evt.metaKey)) {
+      document.removeEventListener(`keydown`, this._onSendMsg);
+    }
+  }
+
+  rerender(typeDataChange, commentsData) {
     if (typeDataChange === `userState`) {
       if (this._movieDetailsComponent) {
         this._movieDetailsComponent.rerenderBtnState(this._movieData.watchlist, this._movieData.watched, this._movieData.favorite);
       }
       this._movieComponent.rerenderBtnState(this._movieData.watchlist, this._movieData.watched, this._movieData.favorite);
-      return;
-    }
-    this._movieDetailsComponent.rerenderOwnrating(this._movieData.ownrating);
+    } else if (typeDataChange === `commentDelete`) {
+      this._commentsData = commentsData
+      this._movieDetailsComponent.rerenderComments(this._commentsData);
+      this._movieComponent.rerenderCommentsCount(this._commentsData.length);
+    } else if(typeDataChange === `ownrating`) {
+      this._movieDetailsComponent.rerenderOwnrating(this._movieData.ownrating);
+    } 
   }
 
-  onDataChange(data) {
-    let typeDataChange = `userState`;
+  onDataChange(dataType, dataChange = null) {
     this._initTmpData();
-
-    if (data === `watchlist`) {
+    if (dataType === `userState` && dataChange === `watchlist`) {
       this._movieData.watchlist = !this._tmpData.watchlist;
-    } else if (data === `watched`) {
+    } else if (dataType === `userState` && dataChange === `watched`) {
       this._movieData.watched = !this._tmpData.watched;
       this._movieData.ownrating = null;
-    } else if (data === `favorite`) {
+    } else if (dataType === `userState` && dataChange === `favorite`) {
       this._movieData.favorite = !this._tmpData.favorite;
-    } else if (typeof data === `number`) {
-      this._movieData.ownrating = data;
-      typeDataChange = `ownrating`;
+    } else if (dataType === `ownrating`) {
+      this._movieData.ownrating = dataChange;
+    } else if (dataType === `commentDelete`) {
+      // const indexCommentsData = this._commentsData.findIndex((i) => i.id === dataChange);
+      // this._commentsData = [...this._commentsData.slice(0, indexCommentsData), ...this._commentsData.slice(indexCommentsData + 1)];
+      this._tmpData = dataChange; //id комментария
+      console.log(dataChange)
     }
 
     this._onDataChange(this._movieData, this._tmpData, this, typeDataChange);

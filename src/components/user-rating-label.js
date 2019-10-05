@@ -15,7 +15,7 @@ export default class UserRatingLabel extends AbstractComponent {
 
   _onclick() {
     this.getElement().addEventListener(`click`, () => {
-      this._onDataChange(this._rating);
+      this._onDataChange(`ownrating`, this._rating);
     });
   }
 }

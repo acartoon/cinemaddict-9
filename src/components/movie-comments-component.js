@@ -6,8 +6,9 @@ import CommentsList from './comments-list.js';
 
 
 export default class MovieCommentsComponent extends AbstractComponent {
-  constructor(commentsData) {
+  constructor(commentsData, onDataChange) {
     super();
+    this.onDataChange = onDataChange;
     this._commentsData = commentsData;
     this._commentsList = new CommentsList();
     this._newComment = new NewComment();
@@ -23,7 +24,7 @@ export default class MovieCommentsComponent extends AbstractComponent {
   }
 
   _renderComments(commentData, container) {
-    const commentComponent = new CommentComponent(commentData);
+    const commentComponent = new CommentComponent(commentData, this.onDataChange);
     render(container, commentComponent.getElement(), Position.BEFOREEND);
   }
 
