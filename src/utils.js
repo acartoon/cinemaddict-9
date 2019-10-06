@@ -1,3 +1,5 @@
+export const emojis = [`smile`, `sleeping`, `puke`, `angry`];
+
 export const getRandomInteger = (max, min = 1) => Math.round(min - 0.5 + Math.random() * (max - min + 1));
 
 export const getRandomElements = (arr, count, func) => new Array(count).fill(``).map(() => arr[func(0, arr.length - 1)]);
@@ -22,7 +24,6 @@ export function getRandomDate() {
 }
 
 export const getCounFilters = (movieData, filterName) => movieData.reduce((total, i) => (i[filterName] ? total + 1 : total), 0);
-
 export const generateComments = (length, getComment) => {
   const comments = [];
   let counter = 0;
@@ -35,6 +36,7 @@ export const generateComments = (length, getComment) => {
     comments.push(filmComments);
   }
   return comments;
+
 };
 
 export function renderElement(container, template, type = `beforeend`) {
@@ -44,7 +46,7 @@ export function renderElement(container, template, type = `beforeend`) {
 export const createElement = (template) => {
   const newElement = document.createElement(`div`);
   newElement.innerHTML = template;
-  return newElement.firstChild;
+  return newElement.lastChild;
 };
 
 export const Position = {
@@ -52,8 +54,9 @@ export const Position = {
   BEFOREEND: `beforeend`,
 };
 
-export const render = (container, element, place) => {
+export const render = (container, element, place = `beforeend`) => {
   const places = {
+    'Position.BEFORE': container.before(element),
     'Position.AFTERBEGIN': container.prepend(element),
     'Position.BEFOREEND': container.append(element),
   };
