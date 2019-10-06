@@ -1,10 +1,35 @@
 import AbstractComponent from './abstract-component';
+import { unrender, render, Position } from '../utils';
+import MovieOwnRating from './movie-own-rating';
 
 export default class MovieRating extends AbstractComponent {
-  constructor(poster, name) {
+  constructor(poster, name, ownrating, onDataChange) {
     super();
     this._poster = poster;
     this._name = name;
+    this._ownrating = ownrating;
+    this._movieOwnRating = null;
+    this.onDataChange = onDataChange;
+
+    this._init();
+  }
+
+  _init() {
+    this._renderRating(this._ownrating);
+  }
+  _renderRating(ownrating) {
+    this._movieOwnRating = new MovieOwnRating(ownrating, this.onDataChange);
+    render(this.getElement().querySelector(`.film-details__user-rating-inner`), this._movieOwnRating.getElement(), Position.BEFOREEND);
+  }
+
+  _unrenderRating() {
+    unrender(this._movieOwnRating.getElement());
+    this._movieOwnRating.removeElement();
+  }
+
+  update(ownrating) {
+    this._unrenderRating();
+    this._renderRating(ownrating);
   }
 
   getTemplate() {
@@ -23,6 +48,7 @@ export default class MovieRating extends AbstractComponent {
         <h3 class="film-details__user-rating-title">${this._name}</h3>
 
         <p class="film-details__user-rating-feelings">How you feel it?</p>
+        
       </section>
     </div>
   </section></div>`;

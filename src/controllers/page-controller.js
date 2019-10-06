@@ -43,9 +43,14 @@ export default class PageController {
   onDataChange(newData, oldData, movie, typeDataChange) {
     const index = this._movieData.findIndex((i) => i.id === oldData.id);
     this._movieData[index] = newData;
+    let movieId = ``;
 
-    if(typeDataChange === `commentDelete`)
-    movie.rerender(typeDataChange);
+    if(typeDataChange === `commentDelete`) {
+      const indexCommentsData = this._commentsData.findIndex((i) => i.id === oldData);
+      movieId = this._commentsData[indexCommentsData].idFilm;
+      this._commentsData = [...this._commentsData.slice(0, indexCommentsData), ...this._commentsData.slice(indexCommentsData + 1)];
+    }
+    movie.rerender(typeDataChange, getComments(this._commentsData, movieId));
   }
 
   _renderMovieList(movieList, data) {

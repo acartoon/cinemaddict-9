@@ -1,6 +1,6 @@
 import MovieBaseComponent from './movie-base-component.js';
 import MovieBtnState from './movie-btn-state.js';
-import {render} from '../utils.js';
+import {render, unrender} from '../utils.js';
 import moment from 'moment';
 import MovieCommentsCount from './movie-comments-count';
 

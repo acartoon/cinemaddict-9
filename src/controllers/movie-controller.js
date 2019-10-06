@@ -79,13 +79,15 @@ export default class MovieController {
     }
   }
 
-  rerender(typeDataChange, commentsData) {
+  rerender(typeDataChange, commentsData = null) {
+    // this._movieDetailsComponent.rerenderData(typeDataChange, commentsData);
     if (typeDataChange === `userState`) {
       if (this._movieDetailsComponent) {
         this._movieDetailsComponent.rerenderBtnState(this._movieData.watchlist, this._movieData.watched, this._movieData.favorite);
       }
       this._movieComponent.rerenderBtnState(this._movieData.watchlist, this._movieData.watched, this._movieData.favorite);
     } else if (typeDataChange === `commentDelete`) {
+      console.log(commentsData)
       this._commentsData = commentsData;
       this._movieDetailsComponent.rerenderComments(this._commentsData);
       this._movieComponent.rerenderCommentsCount(this._commentsData.length);

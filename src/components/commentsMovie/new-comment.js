@@ -1,5 +1,5 @@
-import AbstractComponent from './abstract-component.js';
-import {emojis, render, Position} from '../utils.js';
+import AbstractComponent from '../abstract-component.js';
+import {emojis, render, Position} from '../../utils.js';
 import EmojiInput from './emoji-input.js';
 import EmojiLabel from './emoji-label.js';
 
@@ -23,6 +23,12 @@ export default class NewComment extends AbstractComponent {
   onChangeEmotion(emotion) {
     const container = this.getElement().querySelector(`.film-details__add-emoji-label`);
     container.innerHTML = `<img src="images/emoji/${emotion}.png" width="55" height="55" alt="${emotion}">`;
+  }
+
+  test() {
+    const input = this.getElement().addEventListener(`film-details__comment-label`);
+
+    input.addEventListener(``)
   }
 
   getTemplate() {

@@ -70,10 +70,10 @@ export const Position = {
   BEFOREEND: `beforeend`,
 };
 
-export const render = (container, element, place = `beforeend`) => {
+export const render = (container, element, place) => {
   const places = {
-    'Position.AFTERBEGIN': container.prepend(element),
-    'Position.BEFOREEND': container.append(element),
+    'afterbegin': container.prepend(element),
+    'beforeend': container.append(element), 
   };
   return places[place];
 };
