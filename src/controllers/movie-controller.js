@@ -86,7 +86,7 @@ export default class MovieController {
       }
       this._movieComponent.rerenderBtnState(this._movieData.watchlist, this._movieData.watched, this._movieData.favorite);
     } else if (typeDataChange === `commentDelete`) {
-      this._commentsData = commentsData
+      this._commentsData = commentsData;
       this._movieDetailsComponent.rerenderComments(this._commentsData);
       this._movieComponent.rerenderCommentsCount(this._commentsData.length);
     } else if(typeDataChange === `ownrating`) {
@@ -106,13 +106,10 @@ export default class MovieController {
     } else if (dataType === `ownrating`) {
       this._movieData.ownrating = dataChange;
     } else if (dataType === `commentDelete`) {
-      // const indexCommentsData = this._commentsData.findIndex((i) => i.id === dataChange);
-      // this._commentsData = [...this._commentsData.slice(0, indexCommentsData), ...this._commentsData.slice(indexCommentsData + 1)];
       this._tmpData = dataChange; //id комментария
-      console.log(dataChange)
     }
 
-    this._onDataChange(this._movieData, this._tmpData, this, typeDataChange);
+    this._onDataChange(this._movieData, this._tmpData, this, dataType);
     this._resetTmpData();
   }
 

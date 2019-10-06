@@ -25,8 +25,8 @@ export default class PageController {
   }
 
   init() {
-    render(this._container.querySelector(`.main`), this._sort.getElement(), Position.BEFOREEND);
-    render(this._container.querySelector(`.main`), this._movieContainer.getElement(), Position.BEFOREEND);
+    render(this._container, this._sort.getElement(), Position.BEFOREEND);
+    render(this._container, this._movieContainer.getElement(), Position.BEFOREEND);
 
     this._movieToRender = (this._movieData.length < this._MAIN_BLOCK_LENGTH) ? this._movieData.length : this._MAIN_BLOCK_LENGTH;
     render(this._container, this._sort.getElement(), Position.BEFOREEND);
@@ -43,6 +43,8 @@ export default class PageController {
   onDataChange(newData, oldData, movie, typeDataChange) {
     const index = this._movieData.findIndex((i) => i.id === oldData.id);
     this._movieData[index] = newData;
+
+    if(typeDataChange === `commentDelete`)
     movie.rerender(typeDataChange);
   }
 
