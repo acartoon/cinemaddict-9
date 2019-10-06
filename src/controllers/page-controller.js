@@ -42,7 +42,6 @@ export default class PageController {
     this._movieData[index] = newData;
     el.rerender(typeDataChange);
   }
-
   _renderMovieList(movieList, data) {
     render(this._movieContainer.getElement(), movieList.getElement(), Position.BEFOREEND);
     const container = movieList.getElement().querySelector(`.films-list__container`);
