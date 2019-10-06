@@ -103,6 +103,5 @@ export default class PageController {
 
   onChangeView() {
     this._subscriptions.forEach((subscription) => subscription());
-    // console.log(this._subscriptions)
   }
 }

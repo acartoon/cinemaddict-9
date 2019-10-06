@@ -4,9 +4,10 @@ import {
   getRandomDate,
   getRandomInteger,
   getRandomTime,
-  counterFilters,
-  generateCommetnts,
-  emojis
+  getCountFilms,
+  generateComments,
+  emojis,
+  getRandomString
 } from './utils.js';
 
 const MOVIE_LENGTH = 15;
@@ -45,10 +46,9 @@ const genres = new Set([`Horror`, `Comedy`, `Romance`, `Fantasy`, `Drama`, `Cart
 const description = `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras aliquet varius magna, non porta ligula feugiat eget. Fusce tristique felis at fermentum pharetra. Aliquam id orci ut lectus varius viverra. Nullam nunc ex, convallis sed finibus eget, sollicitudin eget ante. Phasellus eros mauris, condimentum sed nibh vitae, sodales efficitur ipsum. Sed blandit, eros vel aliquam faucibus, purus ex euismod diam, eu luctus nunc ante ut dui. Sed sed nisi sed augue convallis suscipit in sed felis. Aliquam erat volutpat. Nunc fermentum tortor ac porta dapibus. In rutrum ac purus sit amet tempus.`;
 const posters = [`./images/posters/made-for-each-other.png`, `./images/posters/popeye-meets-sinbad.png`, `./images/posters/sagebrush-trail.jpg`, `./images/posters/santa-claus-conquers-the-martians.jpg`, `./images/posters/the-dance-of-life.jpg`, `./images/posters/the-great-flamarion.jpg`, `./images/posters/the-man-with-the-golden-arm.jpg`];
 const movie = [];
-const comments = [];
 
 const generateMovie = () => ({
-  id: null,
+  id: getRandomString(3),
   name: null,
   originalName: null,
   director: Array.from(namesPeople)[getRandomInteger(4)],
@@ -68,8 +68,8 @@ const generateMovie = () => ({
   poster: posters[getRandomInteger(6)],
 });
 
-const generateComment = () => ({
-  id: null,
+const getComment = () => ({
+  id: getRandomString(3),
   idFilm: null,
   comment: getDescriptionFilm(description),
   author: Array.from(namesPeople)[getRandomInteger(Array.from(namesPeople).length-1)],
@@ -79,12 +79,13 @@ const generateComment = () => ({
 
 for(let i = 0; i < MOVIE_LENGTH; i++ ) {
   movie.push(generateMovie());
-  movie[i] = {...movie[i], id: i, name: Array.from(filmNames)[i], originalName: Array.from(filmNames)[i]};
+  movie[i] = {...movie[i], name: Array.from(filmNames)[i], originalName: Array.from(filmNames)[i]};
 }
+console.log(movie)
 
-generateCommetnts(MOVIE_LENGTH, generateComment, comments);
+const comments = generateComments(movie, getComment);
 
-const countWatched = counterFilters(movie, `watched`);
+const countWatched = getCountFilms(movie, `watched`);
 
 const filters = [
   {
@@ -94,7 +95,7 @@ const filters = [
   },
   {
     title: `Watchlist`,
-    count: counterFilters(movie, `watchlist`),
+    count: getCountFilms(movie, `watchlist`),
     link: `Watchlist`,
   },
   {
@@ -104,7 +105,7 @@ const filters = [
   },
   {
     title: `Favorites`,
-    count: counterFilters(movie, `favorite`),
+    count: getCountFilms(movie, `favorite`),
     link: `favorites`,
   },
 ];

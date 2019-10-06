@@ -1,7 +1,7 @@
 import MovieBaseComponent from './movie-base-component.js';
 import MovieBtnState from './movie-btn-state.js';
 import {render} from '../utils.js';
-import moment from 'moment'
+import moment from 'moment';
 
 export default class Movie extends MovieBaseComponent {
   constructor(comments, data, onDataChange) {
@@ -29,7 +29,6 @@ export default class Movie extends MovieBaseComponent {
 
     btnData.forEach((i) => {
       const btn = new MovieBtnState(i, this._onDataChange);
-      // const btn = new MovieBtnState(i.state, i.classBtn, i.data, i.title, this._onDataChange);
       render(this.getElement().querySelector(`.film-card__controls`), btn.getElement());
     });
   }
@@ -39,7 +38,7 @@ export default class Movie extends MovieBaseComponent {
     <h3 class="film-card__title">${this._name}</h3>
     <p class="film-card__rating">${this._rating}</p>
     <p class="film-card__info">
-      <span class="film-card__year">${moment(this._releaseDate).format('YYYY')}</span>
+      <span class="film-card__year">${moment(this._releaseDate).format(`YYYY`)}</span>
       <span class="film-card__duration">${this._runtime}</span>
       <span class="film-card__genre">${this._genres[0]}</span>
     </p>

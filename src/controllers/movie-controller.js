@@ -13,8 +13,6 @@ export default class MovieController {
     this._commentsData = commentsData;
     this._movieDetailsComponent = null;
     this._movieComponent = new Movie(this._commentsData, this._movieData, this.onDataChange);
-    this._movieDetailsComponent = new MovieDetails(this._commentsData, this._movieData, this.onDataChange);
-
     this._onEscKeyDown = this._onEscKeyDown.bind(this);
     this._unrenderMovieDetails = this._unrenderMovieDetails.bind(this);
     this.setDefaultView = this.setDefaultView.bind(this);
@@ -40,9 +38,8 @@ export default class MovieController {
   }
 
   _renderMovieDetails() {
-    this._movieDetailsComponent = new MovieDetails(this._commentsData, this._movieData, this.onDataChange);
-    console.log(this._movieDetailsComponent)
     this._onChangeView();
+    this._movieDetailsComponent = new MovieDetails(this._commentsData, this._movieData, this.onDataChange);
     render(document.body, this._movieDetailsComponent.getElement(), Position.BEFOREEND);
     document.body.classList.add(`hide-overflow`);
     document.addEventListener(`keydown`, this._onEscKeyDown);
@@ -108,9 +105,7 @@ export default class MovieController {
   }
 
   setDefaultView() {
-    const movieDetails = document.querySelector(`.film-details`);
-    if (document.body.contains(movieDetails)) {
-      console.log(this)
+    if (this._movieDetailsComponent) {
       unrender(this._movieDetailsComponent.getElement());
       this._movieDetailsComponent.removeElement();
     }
