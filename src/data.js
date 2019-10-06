@@ -81,7 +81,6 @@ for(let i = 0; i < MOVIE_LENGTH; i++ ) {
   movie.push(generateMovie());
   movie[i] = {...movie[i], name: Array.from(filmNames)[i], originalName: Array.from(filmNames)[i]};
 }
-console.log(movie)
 
 const comments = generateComments(MOVIE_LENGTH, getComment);
 const countWatched = getCounFilters(movie, `watched`);
