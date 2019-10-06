@@ -48,7 +48,7 @@ const posters = [`./images/posters/made-for-each-other.png`, `./images/posters/p
 const movie = [];
 
 const generateMovie = () => ({
-  id: null,
+  id: getRandomString(3),
   name: null,
   originalName: null,
   director: Array.from(namesPeople)[getRandomInteger(4)],
@@ -79,8 +79,9 @@ const getComment = () => ({
 
 for(let i = 0; i < MOVIE_LENGTH; i++ ) {
   movie.push(generateMovie());
-  movie[i] = {...movie[i], id: i, name: Array.from(filmNames)[i], originalName: Array.from(filmNames)[i]};
+  movie[i] = {...movie[i], name: Array.from(filmNames)[i], originalName: Array.from(filmNames)[i]};
 }
+console.log(movie)
 
 const comments = generateComments(MOVIE_LENGTH, getComment);
 const countWatched = getCounFilters(movie, `watched`);

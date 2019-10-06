@@ -4,6 +4,15 @@ export const getRandomInteger = (max, min = 1) => Math.round(min - 0.5 + Math.ra
 
 export const getRandomElements = (arr, count, func) => new Array(count).fill(``).map(() => arr[func(0, arr.length - 1)]);
 
+export function getRandomString(length) {
+  const characters = `ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789`;
+  let result = ``;
+  for (let i = 0; i < length; i++) {
+    result += characters.charAt(Math.floor(Math.random() * characters.length));
+  }
+  return result;
+}
+
 export const getRandomTime = () => {
   let munute = getRandomInteger(180, 65);
   return `${Math.floor(munute / 60)} h ${Math.floor(munute % 60)} m`;

@@ -4,7 +4,7 @@ import MovieCommentsComponent from './movie-comments-component.js';
 import MovieDetailsBtnState from './movie-details-btn-state.js';
 import MovieRating from './movie-rating.js';
 import MovieOwnRating from './movie-own-rating.js';
-import moment from 'moment'
+import moment from 'moment';
 
 export default class MovieDetails extends MovieBaseComponent {
   constructor(comments, data, onDataChange) {
