@@ -4,9 +4,10 @@ import {
   getRandomDate,
   getRandomInteger,
   getRandomTime,
-  counterFilters,
-  generateCommetnts,
-  emojis
+  getCounFilters,
+  getRandomString,
+  emojis,
+  generateComments,
 
 } from './utils.js';
 
@@ -69,7 +70,7 @@ const generateMovie = () => ({
 });
 
 const getComment = () => ({
-  id: null,
+  id: getRandomString(3),
   idFilm: null,
   comment: getDescriptionFilm(description),
   author: Array.from(namesPeople)[getRandomInteger(Array.from(namesPeople).length-1)],
@@ -82,7 +83,7 @@ for(let i = 0; i < MOVIE_LENGTH; i++ ) {
   movie[i] = {...movie[i], name: Array.from(filmNames)[i], originalName: Array.from(filmNames)[i]};
 }
 
-const comments = generateComments(MOVIE_LENGTH, getComment);
+const comments = generateComments(movie, getComment);
 const countWatched = getCounFilters(movie, `watched`);
 
 const filters = [

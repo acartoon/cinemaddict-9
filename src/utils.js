@@ -33,19 +33,16 @@ export function getRandomDate() {
 }
 
 export const getCounFilters = (movieData, filterName) => movieData.reduce((total, i) => (i[filterName] ? total + 1 : total), 0);
-export const generateComments = (length, getComment) => {
-  const comments = [];
-  let counter = 0;
-  for (let a = 0; a < length; a++) {
-    let filmComments = new Array(getRandomInteger(4)).fill(``).map(getComment);
-    filmComments.forEach((i) => {
-        i.id = counter++;
-        i.idFilm = a;
-    });
-    comments.push(filmComments);
-  }
-  return comments;
 
+export const generateComments = (movieData, getComment) => {
+  return movieData.reduce((AllComments, movie) => {
+      let filmComments = new Array(getRandomInteger(4)).fill(``).map(getComment);
+      filmComments.forEach((comment) => {
+        comment.idFilm = movie.id;
+        AllComments.push(comment);
+      });
+    return AllComments
+  }, [])
 };
 
 export function renderElement(container, template, type = `beforeend`) {
