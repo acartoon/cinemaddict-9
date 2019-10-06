@@ -72,7 +72,6 @@ export const Position = {
 
 export const render = (container, element, place = `beforeend`) => {
   const places = {
-    'Position.BEFORE': container.before(element),
     'Position.AFTERBEGIN': container.prepend(element),
     'Position.BEFOREEND': container.append(element),
   };
