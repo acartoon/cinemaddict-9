@@ -21,14 +21,14 @@ export default class Movie extends MovieBaseComponent {
   }
 
   _renderBtnState(watchlist, watched, favorite) {
-    const btnData = [
+    const buttonsData = [
       {state: `watchlist`, classBtn: `add-to-watchlist`, data: watchlist, title: `Add to watchlist`},
       {state: `watched`, classBtn: `mark-as-watched`, data: watched, title: `Mark as watched`},
       {state: `favorite`, classBtn: `favorite`, data: favorite, title: `Mark as favorite`},
     ];
 
-    btnData.forEach((i) => {
-      const btn = new MovieBtnState(i, this._onDataChange);
+    buttonsData.forEach((button) => {
+      const btn = new MovieBtnState(button, this._onDataChange);
       render(this.getElement().querySelector(`.film-card__controls`), btn.getElement());
     });
   }
