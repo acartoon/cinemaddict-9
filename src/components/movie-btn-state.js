@@ -1,7 +1,7 @@
 import AbstractComponent from './abstract-component.js';
 
 export default class MovieBtnState extends AbstractComponent {
-  constructor(state, classBtn, data, title, onDataChange) {
+  constructor({state, classBtn, data, title}, onDataChange) {
     super();
     this._state = state;
     this._classBtn = classBtn;

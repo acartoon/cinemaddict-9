@@ -4,6 +4,7 @@ import MovieCommentsComponent from './movie-comments-component.js';
 import MovieDetailsBtnState from './movie-details-btn-state.js';
 import MovieRating from './movie-rating.js';
 import MovieOwnRating from './movie-own-rating.js';
+import moment from 'moment';
 
 export default class MovieDetails extends MovieBaseComponent {
   constructor(comments, data, onDataChange) {
@@ -105,7 +106,7 @@ export default class MovieDetails extends MovieBaseComponent {
                 </tr>
                 <tr class="film-details__row">
                   <td class="film-details__term">Release Date</td>
-                  <td class="film-details__cell">${new Date(this._releaseDate).toDateString()}</td>
+                  <td class="film-details__cell">${moment(this._releaseDate).format(`DD MMM YYYY`)}</td>
                 </tr>
                 <tr class="film-details__row">
                   <td class="film-details__term">Runtime</td>

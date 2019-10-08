@@ -4,6 +4,15 @@ export const getRandomInteger = (max, min = 1) => Math.round(min - 0.5 + Math.ra
 
 export const getRandomElements = (arr, count, func) => new Array(count).fill(``).map(() => arr[func(0, arr.length - 1)]);
 
+export function getRandomString(length) {
+  const characters = `ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789`;
+  let result = ``;
+  for (let i = 0; i < length; i++) {
+    result += characters.charAt(Math.floor(Math.random() * characters.length));
+  }
+  return result;
+}
+
 export const getRandomTime = () => {
   let munute = getRandomInteger(180, 65);
   return `${Math.floor(munute / 60)} h ${Math.floor(munute % 60)} m`;
@@ -24,19 +33,16 @@ export function getRandomDate() {
 }
 
 export const getCounFilters = (movieData, filterName) => movieData.reduce((total, i) => (i[filterName] ? total + 1 : total), 0);
-export const generateComments = (length, getComment) => {
-  const comments = [];
-  let counter = 0;
-  for (let a = 0; a < length; a++) {
-    let filmComments = new Array(getRandomInteger(4)).fill(``).map(getComment);
-    filmComments.forEach((i) => {
-        i.id = counter++;
-        i.idFilm = a;
-    });
-    comments.push(filmComments);
-  }
-  return comments;
 
+export const generateComments = (movieData, getComment) => {
+  return movieData.reduce((AllComments, movie) => {
+      let filmComments = new Array(getRandomInteger(4)).fill(``).map(getComment);
+      filmComments.forEach((comment) => {
+        comment.idFilm = movie.id;
+        AllComments.push(comment);
+      });
+    return AllComments
+  }, [])
 };
 
 export function renderElement(container, template, type = `beforeend`) {
@@ -56,7 +62,6 @@ export const Position = {
 
 export const render = (container, element, place = `beforeend`) => {
   const places = {
-    'Position.BEFORE': container.before(element),
     'Position.AFTERBEGIN': container.prepend(element),
     'Position.BEFOREEND': container.append(element),
   };
