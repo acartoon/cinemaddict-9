@@ -1,5 +1,5 @@
 import AbstractComponent from './abstract-component';
-import { unrender, render, Position } from '../utils';
+import {unrender, render, Position} from '../utils';
 import MovieOwnRating from './movie-own-rating';
 
 export default class MovieRating extends AbstractComponent {

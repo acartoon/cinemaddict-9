@@ -4,7 +4,7 @@ import {render, unrender} from '../utils.js';
 import moment from 'moment';
 import MovieCommentsCount from './movie-comments-count';
 
-export default class Movie extends MovieBaseComponent {
+export default class MovieCard extends MovieBaseComponent {
   constructor(comments, data, onDataChange) {
     super(comments, data);
     this._onDataChange = onDataChange;
@@ -20,18 +20,19 @@ export default class Movie extends MovieBaseComponent {
 
   renderCommentsCount(commentsCount) {
     this._movieCommentsCount = new MovieCommentsCount(commentsCount);
-    this.getElement().querySelector(`.film-card__controls`).before(this._movieCommentsCount.getElement())
+    this.getElement().querySelector(`.film-card__controls`).before(this._movieCommentsCount.getElement());
   }
 
-  rerenderCommentsCount(commentsCount) {
-    unrender(this._movieCommentsCount.getElement());
-    this._movieCommentsCount.removeElement();
-    this.renderCommentsCount(commentsCount);
-  }
-
-  rerenderBtnState(watchlist, watched, favorite) {
-    this.getElement().querySelector(`.film-card__controls`).innerHTML = ``;
-    this._renderBtnState(watchlist, watched, favorite);
+  updateData(typeDataChange, dataToChange) {
+    if (typeDataChange === `userState`) {
+      let {watched, watchlist, favorite} = dataToChange;
+      this.getElement().querySelector(`.film-card__controls`).innerHTML = ``;
+      this._renderBtnState(watchlist, watched, favorite);
+    } else if (typeDataChange === `comment`) {
+      unrender(this._movieCommentsCount.getElement());
+      this._movieCommentsCount.removeElement();
+      this.renderCommentsCount(dataToChange.length);
+    }
   }
 
   _renderBtnState(watchlist, watched, favorite) {
@@ -57,7 +58,7 @@ export default class Movie extends MovieBaseComponent {
       <span class="film-card__genre">${this._genres[0]}</span>
     </p>
     <img src="${this._poster}" alt="" class="film-card__poster">
-    <p class="film-card__description">$${this._description.length < 140 ? this._description : `${this._description.slice(0, 139).trim()}…`}</p>
+    <p class="film-card__description">${this._description.length < 140 ? this._description : `${this._description.slice(0, 139).trim()}…`}</p>
     <form class="film-card__controls"></form>
     </article>`;
   }

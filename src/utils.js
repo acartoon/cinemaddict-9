@@ -1,5 +1,16 @@
 export const emojis = [`smile`, `sleeping`, `puke`, `angry`];
 
+export const namesPeople = new Set([
+  `Alfred Hitchcock`,
+  `Stanley Kubrick`,
+  `Steven Spielberg`,
+  `Андрей Тарковский`,
+  `Quentin Tarantino`,
+  `Sigourney Weaver`,
+  `John Hurt`,
+  `Ian Holm`,
+]);
+
 export const getRandomInteger = (max, min = 1) => Math.round(min - 0.5 + Math.random() * (max - min + 1));
 
 export const getRandomElements = (arr, count, func) => new Array(count).fill(``).map(() => arr[func(0, arr.length - 1)]);
@@ -73,7 +84,7 @@ export const Position = {
 export const render = (container, element, place) => {
   const places = {
     'afterbegin': container.prepend(element),
-    'beforeend': container.append(element), 
+    'beforeend': container.append(element),
   };
   return places[place];
 };

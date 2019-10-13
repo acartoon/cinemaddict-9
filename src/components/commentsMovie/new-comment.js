@@ -4,20 +4,21 @@ import EmojiInput from './emoji-input.js';
 import EmojiLabel from './emoji-label.js';
 
 export default class NewComment extends AbstractComponent {
-  constructor() {
+  constructor(toAddComment) {
     super();
-    this.onChangeEmotion = this.onChangeEmotion.bind(this);
+    this._toAddComment = toAddComment;
     this._init();
   }
 
   _init() {
     const container = this.getElement().querySelector(`.film-details__emoji-list`);
     emojis.forEach((i) => {
-      const emojiLabel = new EmojiLabel(i, this.onChangeEmotion);
+      const emojiLabel = new EmojiLabel(i, this.onChangeEmotion.bind(this));
       const emojiInput = new EmojiInput(i);
       render(container, emojiLabel.getElement(), Position.BEFOREEND);
       render(container, emojiInput.getElement(), Position.BEFOREEND);
     });
+    this._onInput();
   }
 
   onChangeEmotion(emotion) {
@@ -25,10 +26,13 @@ export default class NewComment extends AbstractComponent {
     container.innerHTML = `<img src="images/emoji/${emotion}.png" width="55" height="55" alt="${emotion}">`;
   }
 
-  test() {
-    const input = this.getElement().addEventListener(`film-details__comment-label`);
+  _onInput() {
+    const input = this.getElement().querySelector(`.film-details__comment-input`);
+    input.addEventListener(`input`, this._onKeydown.bind(this));
+  }
 
-    input.addEventListener(``)
+  _onKeydown() {
+    document.addEventListener(`keydown`, this._toAddComment);
   }
 
   getTemplate() {

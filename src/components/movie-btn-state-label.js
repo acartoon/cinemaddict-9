@@ -10,7 +10,7 @@ export default class MovieBtnStateLabel extends AbstractComponent {
   }
 
   _onClick() {
-    this.getElement().addEventListener(`click`, (evt) => {
+    this.getElement().addEventListener(`click`, () => {
       this._onDataChange(`userState`, this._name);
     });
   }

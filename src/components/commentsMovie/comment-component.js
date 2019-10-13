@@ -1,4 +1,5 @@
 import AbstractComponent from '../abstract-component.js';
+import moment from 'moment';
 
 export default class CommentComponent extends AbstractComponent {
   constructor({id, idFilm, emotion, comment, author, date}, onDataChange) {
@@ -23,7 +24,7 @@ export default class CommentComponent extends AbstractComponent {
       <p class="film-details__comment-text">${this._comment}</p>
       <p class="film-details__comment-info">
       <span class="film-details__comment-author">${this._author}</span>
-      <span class="film-details__comment-day">${this._date}</span>
+      <span class="film-details__comment-day">${moment(this._date).format(`DD MMM YYYY`)}</span>
       <button class="film-details__comment-delete">Delete</button>
       </p>
       </div>
@@ -34,7 +35,7 @@ export default class CommentComponent extends AbstractComponent {
     const deleteDtn = this.getElement().querySelector(`.film-details__comment-delete`);
     deleteDtn.addEventListener(`click`, (evt) => {
       evt.preventDefault();
-      this._onDataChange(`commentDelete`, this._id);
-    })
+      this._onDataChange(`comment`, this._id);
+    });
   }
 }

@@ -1,8 +1,7 @@
 import MovieBaseComponent from './movie-base-component.js';
-import {render, unrender, Position} from '../utils.js';
+import {unrender} from '../utils.js';
 import MovieDetailsBtnState from './movie-details-btn-state.js';
 import MovieRating from './movie-rating.js';
-import MovieOwnRating from './movie-own-rating.js';
 import moment from 'moment';
 import CommentsMovieController from '../controllers/comments-movie-controller.js';
 
@@ -11,27 +10,24 @@ export default class MovieDetails extends MovieBaseComponent {
     super(comments, data);
     this._movieCommentsComponent = [];
     this.onDataChange = onDataChange;
-    this._movieDetailsBtnState = new MovieDetailsBtnState(this._watchlist, this._watched, this._favorite, this.onDataChange);;
+    this._movieDetailsBtnState = new MovieDetailsBtnState(this._watchlist, this._watched, this._favorite, this.onDataChange);
     this._movieRating = null;
-    this._commentsMovieController = new CommentsMovieController(this._comments, this.onDataChange);
-    
+    this._commentsMovieController = new CommentsMovieController(this._comments, this.onDataChange, this._id);
+
     this._init();
   }
-  
+
   _init() {
-    this._movieDetailsBtnState.init(this.getElement().querySelector(`.form-details__top-container`))
-    this._renderMovieRating(this._watched)
-    this._commentsMovieController.init(this.getElement().querySelector(`.form-details__bottom-container`))
+    this._movieDetailsBtnState.init(this.getElement().querySelector(`.form-details__top-container`));
+    this._renderMovieRating(this._watched, this._ownrating);
+    this._commentsMovieController.init(this.getElement().querySelector(`.form-details__bottom-container`));
   }
 
-  _renderMovieRating(watched) {
-    console.log(`func`)
+  _renderMovieRating(watched, ownrating) {
     if (watched && !this._movieRating) {
-      console.log(`true`)
-      this._movieRating = new MovieRating(this._poster, this._name, this._ownrating, this.onDataChange);
+      this._movieRating = new MovieRating(this._poster, this._name, ownrating, this.onDataChange);
       this.getElement().querySelector(`.form-details__bottom-container`).before(this._movieRating.getElement());
-    }
-     else if (!watched && this._movieRating) {
+    } else if (!watched && this._movieRating) {
       this._unrenderMovieRating();
     }
   }
@@ -42,29 +38,18 @@ export default class MovieDetails extends MovieBaseComponent {
     this._movieRating = null;
   }
 
-  // rerenderBtnState(watchlist, watched, favorite) {
-  //   unrender(this._movieDetailsBtnState.getElement());
-  //   this._movieDetailsBtnState.removeElement();
-  //   this._renderBtnState(watchlist, watched, favorite);
-  //   if (watched && !this.getElement().contains(this._movieRating.getElement())) {
-  //     this._renderMovieRating();
-  //   } else if (!watched) {
-  //     this._unrenderMovieRating();
-  //   }
-  // }
-
-    rerenderBtnState(watchlist, watched, favorite) {
+  updateData(typeDataChange, dataToChange) {
+    if (typeDataChange === `userState`) {
+      let {watched, watchlist, favorite, ownrating} = dataToChange;
       this._movieDetailsBtnState.update(watchlist, watched, favorite);
-      this._renderMovieRating(watched);
-    }
-
-    rerenderOwnrating(ownrating) {
+      this._renderMovieRating(watched, ownrating);
+    } else if (typeDataChange === `ownrating`) {
+      let {ownrating} = dataToChange;
       this._movieRating.update(ownrating);
+    } else if (typeDataChange === `comment`) {
+      this._commentsMovieController.update(dataToChange);
     }
-
-    rerenderComments(commentsData) {
-      this._commentsMovieController.update(commentsData);
-    }
+  }
 
   getTemplate() {
     return `<section class="film-details">
