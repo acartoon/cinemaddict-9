@@ -34,15 +34,7 @@ export const getDescriptionFilm = (description) => {
   return `${descriptionArray.join(`.`)}.`;
 };
 
-export function getComments(movieData, id) {
-  const commetnsData = movieData.reduce((commetns, comment) => {
-    if (comment.idFilm === id) {
-      commetns.push(comment);
-    }
-    return commetns;
-  }, []);
-  return commetnsData;
-}
+export const getComments = (data, id) => data.filter(({idFilm}) => idFilm === id);
 
 export function getRandomDate() {
   let randomYear = getRandomInteger(1930, 1990);
@@ -81,7 +73,7 @@ export const Position = {
   BEFOREEND: `beforeend`,
 };
 
-export const render = (container, element, place) => {
+export const render = (container, element, place = `beforeend`) => {
   const places = {
     'afterbegin': container.prepend(element),
     'beforeend': container.append(element),
