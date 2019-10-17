@@ -43,7 +43,7 @@ export default class MovieListController {
     } else if (typeDataChange === `userState`) {
       const index = this._movieData.findIndex((i) => i.id === oldData.id);
       this._movieData[index] = newData;
-      movieId = newData.idFilm;
+      movieId = newData.id;
       dataChange = this._movieData;
     }
     movie.updateData(typeDataChange, getComments(this._commentsData, movieId));
