@@ -1,15 +1,4 @@
-export const emojis = [`smile`, `sleeping`, `puke`, `angry`];
 
-export const namesPeople = new Set([
-  `Alfred Hitchcock`,
-  `Stanley Kubrick`,
-  `Steven Spielberg`,
-  `Андрей Тарковский`,
-  `Quentin Tarantino`,
-  `Sigourney Weaver`,
-  `John Hurt`,
-  `Ian Holm`,
-]);
 
 export const getRandomInteger = (max, min = 1) => Math.round(min - 0.5 + Math.random() * (max - min + 1));
 

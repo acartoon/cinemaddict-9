@@ -6,12 +6,23 @@ import {
   getRandomTime,
   getCountFilms,
   generateComments,
-  emojis,
-  getRandomString,
-  namesPeople
+  getRandomString
 } from './utils.js';
 
 const MOVIE_LENGTH = 15;
+
+export const namesPeople = new Set([
+  `Alfred Hitchcock`,
+  `Stanley Kubrick`,
+  `Steven Spielberg`,
+  `Андрей Тарковский`,
+  `Quentin Tarantino`,
+  `Sigourney Weaver`,
+  `John Hurt`,
+  `Ian Holm`,
+]);
+
+export const emojis = [`smile`, `sleeping`, `puke`, `angry`];
 
 const filmNames = new Set([
   `Здравствуйте, я Ваша тетя`,

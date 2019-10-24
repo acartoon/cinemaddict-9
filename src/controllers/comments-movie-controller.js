@@ -1,9 +1,10 @@
 import NewComment from "../components/commentsMovie/new-comment.js";
 import MovieCommentsContainer from "../components/commentsMovie/movie-comments-container.js";
-import {render, Position, unrender, getRandomInteger, getRandomString, namesPeople} from "../utils.js";
+import {render, Position, unrender, getRandomInteger, getRandomString} from "../utils.js";
 import MovieCommentsTitle from "../components/commentsMovie/movie-comments-title.js";
 import CommentsList from "../components/commentsMovie/comments-list.js";
 import CommentComponent from "../components/commentsMovie/comment-component.js";
+import {namesPeople} from "../data.js";
 export default class CommentsMovieController {
   constructor(commentsData, onDataChange, idFilm) {
     this._container = null;

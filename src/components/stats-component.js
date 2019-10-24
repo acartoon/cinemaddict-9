@@ -4,10 +4,10 @@ export default class StatsComponent extends AbstractComponent {
   constructor() {
     super();
 
-    this.hidden();
+    this.hide();
   }
 
-  hidden() {
+  hide() {
     this.getElement().classList.add(`visually-hidden`);
   }
 

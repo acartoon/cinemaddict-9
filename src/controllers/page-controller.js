@@ -38,12 +38,12 @@ export default class PageController {
     this._stats.getElement().addEventListener(`click`, () => {
       this._toggle = !this._toggle;
       if (this._toggle === true) {
-        this._movieBoradController.hidden();
+        this._movieBoradController.hide();
         this._statsComponent.show();
         this._stats.getElement().classList.add(`main-navigation__item--active`);
       } else {
         this._movieBoradController.show(this._movieData, this._commentsData);
-        this._statsComponent.hidden();
+        this._statsComponent.hide();
         this._stats.getElement().classList.remove(`main-navigation__item--active`);
       }
     });
@@ -59,10 +59,10 @@ export default class PageController {
   }
 
   _hideMainNav() {
-    this._navigationContainer.getElement().classList.add(`visually-hidden`);
+    this._navigationContainer.getElement().classList.add(`visually-hide`);
   }
   _showMainNav() {
-    this._navigationContainer.getElement().classList.remove(`visually-hidden`);
+    this._navigationContainer.getElement().classList.remove(`visually-hide`);
   }
 
   onDataChange(newData, typeDataChange) {
@@ -82,8 +82,8 @@ export default class PageController {
     const searchValue = evt.target.value;
     const resetSearchBtn = this._search.getElement().querySelector(`.search__reset`);
     if (searchValue.length >= 3) {
-      this._movieBoradController.hidden();
-      this._statsComponent.hidden();
+      this._movieBoradController.hide();
+      this._statsComponent.hide();
       this._hideMainNav();
       this._searchController.getMovie(searchValue, this._movieData, this._commentsData);
       resetSearchBtn.addEventListener(`click`, this._resetSearchBoard);
@@ -94,7 +94,7 @@ export default class PageController {
   }
 
   _resetSearchBoard() {
-    this._searchController.hidden();
+    this._searchController.hide();
     this._showMainNav();
     this._movieBoradController.show(this._movieData, this._commentsData);
   }

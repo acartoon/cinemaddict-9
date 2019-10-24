@@ -1,7 +1,8 @@
 import AbstractComponent from '../abstract-component.js';
-import {emojis, render, Position} from '../../utils.js';
+import {render, Position} from '../../utils.js';
 import EmojiInput from './emoji-input.js';
 import EmojiLabel from './emoji-label.js';
+import {emojis} from "../../data";
 
 export default class NewComment extends AbstractComponent {
   constructor(toAddComment) {

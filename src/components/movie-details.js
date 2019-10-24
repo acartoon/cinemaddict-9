@@ -40,7 +40,7 @@ export default class MovieDetails extends MovieBaseComponent {
 
   updateData(typeDataChange, dataToChange) {
     if (typeDataChange === `userState`) {
-      let {watched, watchlist, favorite, ownrating} = dataToChange;
+      const {watched, watchlist, favorite, ownrating} = dataToChange;
       this._movieDetailsBtnState.update(watchlist, watched, favorite);
       this._renderMovieRating(watched, ownrating);
     } else if (typeDataChange === `ownrating`) {

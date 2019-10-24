@@ -25,7 +25,7 @@ export default class MovieBoradController {
     this._init();
   }
 
-  hidden() {
+  hide() {
     this._sort.getElement().classList.add(`visually-hidden`);
     this._movieContainer.getElement().classList.add(`visually-hidden`);
   }
