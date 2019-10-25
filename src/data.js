@@ -4,14 +4,25 @@ import {
   getRandomDate,
   getRandomInteger,
   getRandomTime,
-  getCounFilters,
-  getRandomString,
-  emojis,
+  getCountFilms,
   generateComments,
-
+  getRandomString
 } from './utils.js';
 
 const MOVIE_LENGTH = 15;
+
+export const namesPeople = new Set([
+  `Alfred Hitchcock`,
+  `Stanley Kubrick`,
+  `Steven Spielberg`,
+  `Андрей Тарковский`,
+  `Quentin Tarantino`,
+  `Sigourney Weaver`,
+  `John Hurt`,
+  `Ian Holm`,
+]);
+
+export const emojis = [`smile`, `sleeping`, `puke`, `angry`];
 
 const filmNames = new Set([
   `Здравствуйте, я Ваша тетя`,
@@ -29,17 +40,6 @@ const filmNames = new Set([
   `The Silence of the Lambs`,
   `The Shining`,
   `Ghostbusters`,
-]);
-
-const namesPeople = new Set([
-  `Alfred Hitchcock`,
-  `Stanley Kubrick`,
-  `Steven Spielberg`,
-  `Андрей Тарковский`,
-  `Quentin Tarantino`,
-  `Sigourney Weaver`,
-  `John Hurt`,
-  `Ian Holm`,
 ]);
 
 const countries = new Set([`USA`, `Russia`, `UK`, `New Zealand`]);
@@ -74,7 +74,7 @@ const getComment = () => ({
   idFilm: null,
   comment: getDescriptionFilm(description),
   author: Array.from(namesPeople)[getRandomInteger(Array.from(namesPeople).length-1)],
-  date: `${getRandomInteger(10, 2)} days ago`,
+  date: getRandomInteger(10, 2),
   emotion: emojis[getRandomInteger(0, 3)],
 });
 
@@ -84,7 +84,8 @@ for(let i = 0; i < MOVIE_LENGTH; i++ ) {
 }
 
 const comments = generateComments(movie, getComment);
-const countWatched = getCounFilters(movie, `watched`);
+
+const countWatched = getCountFilms(movie, `watched`);
 
 const filters = [
   {
@@ -94,7 +95,7 @@ const filters = [
   },
   {
     title: `Watchlist`,
-    count: getCounFilters(movie, `watchlist`),
+    count: getCountFilms(movie, `watchlist`),
     link: `Watchlist`,
   },
   {
@@ -104,7 +105,7 @@ const filters = [
   },
   {
     title: `Favorites`,
-    count: getCounFilters(movie, `favorite`),
+    count: getCountFilms(movie, `favorite`),
     link: `favorites`,
   },
 ];

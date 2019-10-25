@@ -1,6 +1,6 @@
 import MovieDetails from '../components/movie-details.js';
 import {render, unrender, Position} from '../utils.js';
-import Movie from '../components/movie';
+import MovieCard from '../components/movie-card';
 import {cloneDeep} from 'lodash';
 
 export default class MovieController {
@@ -12,7 +12,7 @@ export default class MovieController {
     this._onChangeView = onChangeView;
     this._commentsData = commentsData;
     this._movieDetailsComponent = null;
-    this._movieComponent = new Movie(this._commentsData, this._movieData, this.onDataChange);
+    this._movieComponent = new MovieCard(this._commentsData, this._movieData, this.onDataChange);
     this._onEscKeyDown = this._onEscKeyDown.bind(this);
     this._unrenderMovieDetails = this._unrenderMovieDetails.bind(this);
     this.setDefaultView = this.setDefaultView.bind(this);
@@ -30,11 +30,13 @@ export default class MovieController {
   }
 
   _initTmpData() {
-    this._tmpData = cloneDeep(this._movieData);
+    this._oldData = cloneDeep(this._movieData);
+    this._newData = null;
   }
 
   _resetTmpData() {
-    this._tmpData = null;
+    this._oldData = null;
+    this._newData = null;
   }
 
   _renderMovieDetails() {
@@ -73,34 +75,43 @@ export default class MovieController {
     }
   }
 
-  rerender(typeDataChange) {
-    if (typeDataChange === `userState`) {
-      if (this._movieDetailsComponent) {
-        this._movieDetailsComponent.rerenderBtnState(this._movieData.watchlist, this._movieData.watched, this._movieData.favorite);
-      }
-      this._movieComponent.rerenderBtnState(this._movieData.watchlist, this._movieData.watched, this._movieData.favorite);
-      return;
+  _onSendMsg(evt) {
+    if (evt.key === `Enter` && (evt.ctrlKey || evt.metaKey)) {
+      document.removeEventListener(`keydown`, this._onSendMsg);
     }
-    this._movieDetailsComponent.rerenderOwnrating(this._movieData.ownrating);
   }
 
-  onDataChange(data) {
-    let typeDataChange = `userState`;
-    this._initTmpData();
+  updateData(typeDataChange, commentsData) {
+    this._commentsData = commentsData;
+    const dataToChange = (typeDataChange === `comment`) ? this._commentsData : this._movieData;
 
-    if (data === `watchlist`) {
-      this._movieData.watchlist = !this._tmpData.watchlist;
-    } else if (data === `watched`) {
-      this._movieData.watched = !this._tmpData.watched;
-      this._movieData.ownrating = null;
-    } else if (data === `favorite`) {
-      this._movieData.favorite = !this._tmpData.favorite;
-    } else if (typeof data === `number`) {
-      this._movieData.ownrating = data;
-      typeDataChange = `ownrating`;
+    if (this._movieDetailsComponent) {
+      this._movieDetailsComponent.updateData(typeDataChange, dataToChange);
     }
 
-    this._onDataChange(this._movieData, this._tmpData, this, typeDataChange);
+    this._movieComponent.updateData(typeDataChange, dataToChange);
+  }
+
+  onDataChange(dataType, dataChange = null) {
+    this._initTmpData();
+
+    if (dataType === `userState`) {
+      if (dataChange === `watchlist`) {
+        this._movieData.watchlist = !this._movieData.watchlist;
+      } else if (dataChange === `watched`) {
+        this._movieData.watched = !this._movieData.watched;
+        this._movieData.ownrating = null;
+      } else if (dataChange === `favorite`) {
+        this._movieData.favorite = !this._movieData.favorite;
+      }
+      this._newData = this._movieData;
+    } else if (dataType === `ownrating`) {
+      this._movieData.ownrating = dataChange;
+      this._newData = this._movieData;
+    } else if (dataType === `comment`) {
+      this._newData = dataChange;
+    }
+    this._onDataChange(this._newData, this._oldData, this, dataType);
     this._resetTmpData();
   }
 

@@ -1,4 +1,4 @@
-export const emojis = [`smile`, `sleeping`, `puke`, `angry`];
+
 
 export const getRandomInteger = (max, min = 1) => Math.round(min - 0.5 + Math.random() * (max - min + 1));
 
@@ -32,17 +32,19 @@ export function getRandomDate() {
   return new Date(randomYear, randomMonth, randomDate);
 }
 
-export const getCounFilters = (movieData, filterName) => movieData.reduce((total, i) => (i[filterName] ? total + 1 : total), 0);
+export const getCountFilms = (movieData, key) => {
+  return movieData.reduce((total, movie) => (movie[key] ? total + 1 : total), 0);
+};
 
 export const generateComments = (movieData, getComment) => {
   return movieData.reduce((AllComments, movie) => {
-      let filmComments = new Array(getRandomInteger(4)).fill(``).map(getComment);
-      filmComments.forEach((comment) => {
-        comment.idFilm = movie.id;
-        AllComments.push(comment);
-      });
-    return AllComments
-  }, [])
+    let movieComments = new Array(getRandomInteger(4)).fill(``).map(getComment);
+    movieComments.forEach((comment) => {
+      comment.idFilm = movie.id;
+      AllComments.push(comment);
+    });
+    return AllComments;
+  }, []);
 };
 
 export function renderElement(container, template, type = `beforeend`) {
@@ -62,8 +64,8 @@ export const Position = {
 
 export const render = (container, element, place = `beforeend`) => {
   const places = {
-    'Position.AFTERBEGIN': container.prepend(element),
-    'Position.BEFOREEND': container.append(element),
+    'afterbegin': container.prepend(element),
+    'beforeend': container.append(element),
   };
   return places[place];
 };
